@@ -1912,11 +1912,32 @@ GrowShrinkSFXIndexes:
 	.db SoundEffect2_Shrinking
 	.db SoundEffect2_Growing
 
+; SWAPP
+CheckCharacterSwap:
+CheckSelect:
+	LDA Player1JoypadPress
+	CMP #ControllerInput_Select
+	BNE CheckStart
+	LDA #DPCM_ItemPull
+	STA DPCMQueue
+	INC CurrentCharacter
+	RTS
+
+CheckStart:
+	CMP #ControllerInput_Start
+	BNE ReturnFromSwap
+	LDA #DPCM_BossHurt
+	STA DPCMQueue
+	DEC CurrentCharacter
+
+ReturnFromSwap:
+	RTS
 
 HandlePlayerState:
 IFDEF CONTROLLER_2_DEBUG
 	JSR CheckPlayer2Joypad
 ENDIF
+	JSR CheckCharacterSwap ; Read the subroutine name
 
 	LDA PlayerState ; Handles player states?
 	CMP #PlayerState_Lifting

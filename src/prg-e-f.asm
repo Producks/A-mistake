@@ -965,9 +965,9 @@ HorizontalLevel_CheckScroll:
 	AND #%00000100
 	BNE HorizontalLevel_CheckSubArea
 
-	LDA Player1JoypadPress
-	AND #ControllerInput_Start
-	BEQ HorizontalLevel_CheckSubArea
+	LDA Player1JoypadHeld
+	CMP #ControllerInput_Start | ControllerInput_Up ; Changed to avoid collision with swap
+	BNE HorizontalLevel_CheckSubArea
 
 	JMP ShowPauseScreen
 
@@ -1028,9 +1028,9 @@ VerticalLevel_CheckScroll:
 	AND #%00000100
 	BNE VerticalLevel_ProcessFrame
 
-	LDA Player1JoypadPress
-	AND #ControllerInput_Start
-	BNE ShowPauseScreen
+	LDA Player1JoypadHeld
+	CMP #ControllerInput_Start | #ControllerInput_Up ; Changed to avoid colission with new swap method
+	BEQ ShowPauseScreen
 
 VerticalLevel_ProcessFrame:
 	JSR HideAllSprites
@@ -4134,7 +4134,7 @@ EnemyArray_46E_Data:
 	.db SpriteFlags46E_00 ; $3A Enemy_POWBlock
 	.db SpriteFlags46E_Unliftable | SpriteFlags46E_NoEnemyCollision ; $3B Enemy_FallingLogs
 	.db SpriteFlags46E_NoEnemyCollision ; $3C Enemy_SubspaceDoor
-	.db SpriteFlags46E_00 ; $3D Enemy_Key
+	.db SpriteFlags46E_00 | SpriteFlags46E_WideSprite ; $3D Enemy_Key
 	.db SpriteFlags46E_NoEnemyCollision ; $3E Enemy_SubspacePotion
 	.db SpriteFlags46E_NoEnemyCollision ; $3F Enemy_Mushroom
 	.db SpriteFlags46E_NoEnemyCollision ; $40 Enemy_Mushroom1up

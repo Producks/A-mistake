@@ -74,6 +74,17 @@ IFDEF RESET_CHR_LATCH
 	INC ResetCHRLatch
 ENDIF
 
+;
+; Copies all character stats to RAM for hot-swapping the current character
+;
+	LDX #$0F ; Should always be 0F? Check if problem later. 16 bytes to copy according to offset
+CopyCarryYOffsets_Loop:
+	LDA CarryYOffsets, X
+	STA CarryYOffsetsRAM, X
+	DEX
+	BPL CopyCarryYOffsets_Loop
+
+	; Resume to normal code
 	LDY #$1B
 AreaInitialization_CarryYOffsetLoop:
 	; Copy the global carrying Y offsets to memory

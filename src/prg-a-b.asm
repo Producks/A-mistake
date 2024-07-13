@@ -424,6 +424,13 @@ MysteryData14439:
 ; god knows what else.
 ;
 CopyCharacterStatsAndStuff:
+	LDX #$6F ; Should always be 6F, no? Check later if it's correct 64
+CopyCharacterStats_Loop:
+	LDA StatOffsets, X
+	STA StatOffsetsRAM, X
+	DEX
+	BPL CopyCharacterStats_Loop
+
 IFDEF CONTROLLER_2_DEBUG
 	JSR CopyCharacterStats
 ENDIF
