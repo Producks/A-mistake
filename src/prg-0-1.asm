@@ -1912,27 +1912,6 @@ GrowShrinkSFXIndexes:
 	.db SoundEffect2_Shrinking
 	.db SoundEffect2_Growing
 
-; SWAPP
-CheckCharacterSwap:
-CheckSelect:
-	LDA Player1JoypadPress
-	CMP #ControllerInput_Select
-	BNE CheckStart
-	LDA #DPCM_ItemPull
-	STA DPCMQueue
-	INC CurrentCharacter
-	RTS
-
-CheckStart:
-	CMP #ControllerInput_Start
-	BNE ReturnFromSwap
-	LDA #DPCM_BossHurt
-	STA DPCMQueue
-	DEC CurrentCharacter
-
-ReturnFromSwap:
-	RTS
-
 HandlePlayerState:
 IFDEF CONTROLLER_2_DEBUG
 	JSR CheckPlayer2Joypad
@@ -8164,7 +8143,8 @@ SetCurrentCharacter_ClampYVelocity:
 	STA PlayerYVelocity
 
 SetCurrentCharacter_Update:
-	INC SkyFlashTimer
+	LDA #$FF
+	STA SkyFlashTimer
 
 	; update chr for character
 	JSR LoadCharacterCHRBanks
@@ -8260,3 +8240,85 @@ DebugRandomObject:
 	STA CreateObjectType
 	RTS
 ENDIF
+
+; SWAPP
+ChangeCharacterOffsetsSelect:
+	.db Character_Princess ; Mario change to Peach <-
+	.db Character_Toad ; Princess change to Luigi <-
+	.db Character_Luigi ; Toad change to Luigi <-
+	.db Character_Mario ; Peach change to Toad <-
+
+ChangeCharacterOffsetsStart:
+	.db Character_Luigi ; Mario change to Luigi ->
+	.db Character_Mario ; Luigi change to Toad ->
+	.db Character_Princess ; Toad change to Peach ->
+	.db Character_Toad ; Peach change to Mario ->
+
+CheckCharacterSwap:
+CheckSelect:
+	LDA Player1JoypadPress
+	CMP #ControllerInput_Select
+	BNE CheckStart
+	LDA #DPCM_ItemPull
+	STA DPCMQueue
+	LDY CurrentCharacter
+	LDA ChangeCharacterOffsetsSelect, Y
+	JMP CopyCharacterStats
+
+CheckStart:
+	CMP #ControllerInput_Start
+	BNE ReturnFromSwap
+	LDA #DPCM_BossHurt
+	STA DPCMQueue
+	LDY CurrentCharacter
+	LDA ChangeCharacterOffsetsStart, Y
+
+CopyCharacterStats:
+	STA CurrentCharacter
+	LDX CurrentCharacter
+	LDY StatOffsetsRAM, X
+	LDX #$00
+
+SetCurrentCharacter_StatsLoop:
+	LDA StatOffsetsRAM + CharacterStats-StatOffsets, Y
+	STA CharacterStatsRAM, X
+	INY
+	INX
+	CPX #$17
+	BCC SetCurrentCharacter_StatsLoop
+	LDA CurrentCharacter
+	ASL A
+	ASL A
+	TAY
+	LDX #$00
+
+SetCurrentCharacter_PaletteLoop:
+	LDA StatOffsetsRAM + CharacterPalette-StatOffsets, Y
+	STA RestorePlayerPalette0, X
+	INY
+	INX
+	CPX #$04
+	BCC SetCurrentCharacter_PaletteLoop
+
+CopyCharacterYOffSet:
+	LDY CurrentCharacter
+	LDA CarryYOffsetsRAM + CarryYOffsetBigLo-CarryYOffsets, Y
+	STA ItemCarryYOffsetsRAM
+	LDA CarryYOffsetsRAM + CarryYOffsetSmallLo-CarryYOffsets, Y
+	STA ItemCarryYOffsetsRAM + $07
+	LDA CarryYOffsetsRAM + CarryYOffsetBigHi-CarryYOffsets, Y
+	STA ItemCarryYOffsetsRAM + $0E
+	LDA CarryYOffsetsRAM + CarryYOffsetSmallHi-CarryYOffsets, Y
+	STA ItemCarryYOffsetsRAM + $15
+
+SetCurrentCharacter_Update:
+	INC SkyFlashTimer
+
+	; update chr for character
+	JSR LoadCharacterCHRBanks
+
+	LDA #DPCM_DrumSample_B
+	STA DPCMQueue
+
+ReturnFromSwap:
+	RTS
