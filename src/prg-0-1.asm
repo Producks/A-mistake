@@ -8258,24 +8258,25 @@ CheckCharacterSwap:
 CheckSelect:
 	LDA Player1JoypadPress
 	CMP #ControllerInput_Select
-	BNE CheckStart
-	LDA #DPCM_ItemPull
-	STA DPCMQueue
+	BNE CheckStart ; Check Start if Select isn't pressed
 	LDY CurrentCharacter
+	LDX #DPCM_DrumSample_B
 	LDA ChangeCharacterOffsetsSelect, Y
 	JMP CopyCharacterStats
 
 CheckStart:
 	CMP #ControllerInput_Start
 	BNE ReturnFromSwap
-	LDA #DPCM_BossHurt
-	STA DPCMQueue
+	LDX #DPCM_DrumSample_A
 	LDY CurrentCharacter
 	LDA ChangeCharacterOffsetsStart, Y
 
 CopyCharacterStats:
+	STX DPCMQueue
 	STA CurrentCharacter
-	LDX CurrentCharacter
+
+SetupForSetCurrentCharacter_StatsLoop:
+	TAX ; Accumulator hold what we need for X "CurrentCharacter"
 	LDY StatOffsetsRAM, X
 	LDX #$00
 
@@ -8286,6 +8287,8 @@ SetCurrentCharacter_StatsLoop:
 	INX
 	CPX #$17
 	BCC SetCurrentCharacter_StatsLoop
+
+SetupForSetCurrentCharacter_PaletteLoop:
 	LDA CurrentCharacter
 	ASL A
 	ASL A
@@ -8313,12 +8316,7 @@ CopyCharacterYOffSet:
 
 SetCurrentCharacter_Update:
 	INC SkyFlashTimer
-
-	; update chr for character
 	JSR LoadCharacterCHRBanks
-
-	LDA #DPCM_DrumSample_B
-	STA DPCMQueue
 
 ReturnFromSwap:
 	RTS
