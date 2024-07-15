@@ -8241,7 +8241,7 @@ DebugRandomObject:
 	RTS
 ENDIF
 
-; SWAPP
+
 ChangeCharacterOffsetsSelect:
 	.db Character_Princess ; Mario change to Peach <-
 	.db Character_Toad ; Princess change to Luigi <-
@@ -8254,30 +8254,48 @@ ChangeCharacterOffsetsStart:
 	.db Character_Princess ; Toad change to Peach ->
 	.db Character_Toad ; Peach change to Mario ->
 
+; Character swap routine, heavily inspired by kmck code
+; Check if select or start is being pressed, swap characters if any are press with a lookup table
+; Thanks to nintendo for making Luigi 03 and Peach 01...
 CheckCharacterSwap:
-CheckSelect:
 	LDA Player1JoypadPress
+	AND #ControllerInput_Start | #ControllerInput_Select
+	BEQ ReturnFromSwap ; If start isn't being pressed or select, go back
+
+CheckSelect:
 	CMP #ControllerInput_Select
-	BNE CheckStart ; Check Start if Select isn't pressed
+	BNE SetupStart ; Check if select is being pressed, if not go to SetupStart
+
+SetupSelect:
 	LDY CurrentCharacter
 	LDX #DPCM_DrumSample_B
 	LDA ChangeCharacterOffsetsSelect, Y
-	JMP CopyCharacterStats
+	JMP CopySetupStartOrSelect
 
-CheckStart:
-	CMP #ControllerInput_Start
-	BNE ReturnFromSwap
+SetupStart:
 	LDX #DPCM_DrumSample_A
 	LDY CurrentCharacter
 	LDA ChangeCharacterOffsetsStart, Y
 
-CopyCharacterStats:
+CopySetupStartOrSelect:
 	STX DPCMQueue
 	STA CurrentCharacter
 
-SetupForSetCurrentCharacter_StatsLoop:
+SetupCopyCharacterYOffSet:
 	TAX ; Accumulator hold what we need for X "CurrentCharacter"
-	LDY StatOffsetsRAM, X
+
+CopyCharacterYOffSet:
+	LDA CarryYOffsetsRAM + CarryYOffsetBigLo-CarryYOffsets, X
+	STA ItemCarryYOffsetsRAM
+	LDA CarryYOffsetsRAM + CarryYOffsetSmallLo-CarryYOffsets, X
+	STA ItemCarryYOffsetsRAM + $07
+	LDA CarryYOffsetsRAM + CarryYOffsetBigHi-CarryYOffsets, X
+	STA ItemCarryYOffsetsRAM + $0E
+	LDA CarryYOffsetsRAM + CarryYOffsetSmallHi-CarryYOffsets, X
+	STA ItemCarryYOffsetsRAM + $15
+
+SetupForSetCurrentCharacter_StatsLoop:
+	LDY StatOffsetsRAM, X ; CurrentCharacter in X register carry over from the setup from earlier
 	LDX #$00
 
 SetCurrentCharacter_StatsLoop:
@@ -8302,17 +8320,6 @@ SetCurrentCharacter_PaletteLoop:
 	INX
 	CPX #$04
 	BCC SetCurrentCharacter_PaletteLoop
-
-CopyCharacterYOffSet:
-	LDY CurrentCharacter
-	LDA CarryYOffsetsRAM + CarryYOffsetBigLo-CarryYOffsets, Y
-	STA ItemCarryYOffsetsRAM
-	LDA CarryYOffsetsRAM + CarryYOffsetSmallLo-CarryYOffsets, Y
-	STA ItemCarryYOffsetsRAM + $07
-	LDA CarryYOffsetsRAM + CarryYOffsetBigHi-CarryYOffsets, Y
-	STA ItemCarryYOffsetsRAM + $0E
-	LDA CarryYOffsetsRAM + CarryYOffsetSmallHi-CarryYOffsets, Y
-	STA ItemCarryYOffsetsRAM + $15
 
 SetCurrentCharacter_Update:
 	INC SkyFlashTimer
