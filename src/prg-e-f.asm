@@ -965,9 +965,9 @@ HorizontalLevel_CheckScroll:
 	AND #%00000100
 	BNE HorizontalLevel_CheckSubArea
 
-	LDA Player1JoypadPress
-	AND #ControllerInput_Start
-	BEQ HorizontalLevel_CheckSubArea
+	LDA Player1JoypadHeld
+	CMP #ControllerInput_Start | ControllerInput_Up ; Changed to avoid collision with swap
+	BNE HorizontalLevel_CheckSubArea
 
 	JMP ShowPauseScreen
 
@@ -1028,9 +1028,9 @@ VerticalLevel_CheckScroll:
 	AND #%00000100
 	BNE VerticalLevel_ProcessFrame
 
-	LDA Player1JoypadPress
-	AND #ControllerInput_Start
-	BNE ShowPauseScreen
+	LDA Player1JoypadHeld
+	CMP #ControllerInput_Start | #ControllerInput_Up ; Changed to avoid colission with new swap method
+	BEQ ShowPauseScreen
 
 VerticalLevel_ProcessFrame:
 	JSR HideAllSprites

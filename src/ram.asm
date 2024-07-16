@@ -2203,13 +2203,14 @@ RawEnemyDataAddr = $7b00
 ;
 IFDEF CONTROLLER_2_DEBUG
 	UpdateJoypadsTemp = $00c6
-	CarryYOffsetsRAM = $7e00
-	StatOffsetsRAM = $7e10
 	ChangeCharacterTimer = $7e80
 	ChangeCharacterPoofTimer = $7e81
 	CreateObjectType = $7e82
 	CreateObjectAttributes = $7e83
 ENDIF
+
+CarryYOffsetsRAM = $7e00 ; Ram adress to copy character item Y offset, where it would be held
+StatOffsetsRAM = $7e10 ; Ram adress where to copy character swap for hot swapping
 
 ItemCarryYOffsetsRAM = $7f00
 

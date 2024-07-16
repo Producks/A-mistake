@@ -1912,11 +1912,11 @@ GrowShrinkSFXIndexes:
 	.db SoundEffect2_Shrinking
 	.db SoundEffect2_Growing
 
-
 HandlePlayerState:
 IFDEF CONTROLLER_2_DEBUG
 	JSR CheckPlayer2Joypad
 ENDIF
+	JSR CheckCharacterSwap ; Read the subroutine name
 
 	LDA PlayerState ; Handles player states?
 	CMP #PlayerState_Lifting
@@ -8143,7 +8143,8 @@ SetCurrentCharacter_ClampYVelocity:
 	STA PlayerYVelocity
 
 SetCurrentCharacter_Update:
-	INC SkyFlashTimer
+	LDA #$FF
+	STA SkyFlashTimer
 
 	; update chr for character
 	JSR LoadCharacterCHRBanks
@@ -8239,3 +8240,112 @@ DebugRandomObject:
 	STA CreateObjectType
 	RTS
 ENDIF
+
+ChangeCharacterOffsetsSelect:
+	.db Character_Princess ; Mario change to Peach <-
+	.db Character_Toad ; Princess change to Luigi <-
+	.db Character_Luigi ; Toad change to Luigi <-
+	.db Character_Mario ; Peach change to Toad <-
+
+ChangeCharacterOffsetsStart:
+	.db Character_Luigi ; Mario change to Luigi ->
+	.db Character_Mario ; Luigi change to Toad ->
+	.db Character_Princess ; Toad change to Peach ->
+	.db Character_Toad ; Peach change to Mario ->
+
+; Character swap routine, heavily inspired by kmck code
+; Check if select or start is being pressed, swap characters if any are press with a lookup table
+; Thanks to nintendo for making Luigi 03 and Peach 01...
+CheckCharacterSwap:
+	LDA Player1JoypadPress
+	AND #ControllerInput_Start | #ControllerInput_Select
+	BEQ ReturnFromSwap ; If start isn't being pressed or select, go back
+
+CheckSelect:
+	CMP #ControllerInput_Select
+	BNE SetupStart ; Check if select is being pressed, if not go to SetupStart
+
+SetupSelect:
+	LDY CurrentCharacter
+	LDX #DPCM_DrumSample_B
+	LDA ChangeCharacterOffsetsSelect, Y
+	JMP CopySetupStartOrSelect
+
+SetupStart:
+	LDX #DPCM_DrumSample_A
+	LDY CurrentCharacter
+	LDA ChangeCharacterOffsetsStart, Y
+
+CopySetupStartOrSelect:
+	STX DPCMQueue
+	STA CurrentCharacter
+
+SetupCopyCharacterYOffSet:
+	TAX ; Accumulator hold what we need for X "CurrentCharacter"
+
+CopyCharacterYOffSet:
+	LDA CarryYOffsetsRAM + CarryYOffsetBigLo-CarryYOffsets, X
+	STA ItemCarryYOffsetsRAM
+	LDA CarryYOffsetsRAM + CarryYOffsetSmallLo-CarryYOffsets, X
+	STA ItemCarryYOffsetsRAM + $07
+	LDA CarryYOffsetsRAM + CarryYOffsetBigHi-CarryYOffsets, X
+	STA ItemCarryYOffsetsRAM + $0E
+	LDA CarryYOffsetsRAM + CarryYOffsetSmallHi-CarryYOffsets, X
+	STA ItemCarryYOffsetsRAM + $15
+
+SetupForSetCurrentCharacter_StatsLoop:
+	LDY StatOffsetsRAM, X ; CurrentCharacter in X register carry over from the setup from earlier
+	LDX #$00
+
+SetCurrentCharacter_StatsLoop:
+	LDA StatOffsetsRAM + CharacterStats-StatOffsets, Y
+	STA CharacterStatsRAM, X
+	INY
+	INX
+	CPX #$17
+	BCC SetCurrentCharacter_StatsLoop
+
+SetupForSetCurrentCharacter_PaletteLoop:
+	LDA CurrentCharacter
+	ASL A
+	ASL A
+	TAY
+	LDX #$00
+
+SetCurrentCharacter_PaletteLoop:
+	LDA StatOffsetsRAM + CharacterPalette-StatOffsets, Y
+	STA RestorePlayerPalette0, X
+	INY
+	INX
+	CPX #$04
+	BCC SetCurrentCharacter_PaletteLoop
+
+SetCurrentCharacter_Update:
+	JSR UpdateCharacterPalette
+	JSR LoadCharacterCHRBanks
+
+ReturnFromSwap:
+	RTS
+
+; Write to the PPU to update the color palette at location $3F11-$3f13
+UpdateCharacterPalette:
+	LDX byte_RAM_300
+	LDA #$3F
+	STA PPUBuffer_301, X
+	LDA #$11
+	STA PPUBuffer_301 + 1, X
+	LDA #$03
+	STA PPUBuffer_301 + 2, X
+	LDA RestorePlayerPalette1
+	STA PPUBuffer_301 + 3, X
+	LDA RestorePlayerPalette2
+	STA PPUBuffer_301 + 4, X
+	LDA RestorePlayerPalette3
+	STA PPUBuffer_301 + 5, X
+	LDA #$00
+	STA PPUBuffer_301 + 6, X
+	TXA
+	CLC
+	ADC #$06
+	STA byte_RAM_300
+	RTS
