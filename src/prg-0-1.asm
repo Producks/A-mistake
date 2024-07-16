@@ -8241,7 +8241,6 @@ DebugRandomObject:
 	RTS
 ENDIF
 
-
 ChangeCharacterOffsetsSelect:
 	.db Character_Princess ; Mario change to Peach <-
 	.db Character_Toad ; Princess change to Luigi <-
@@ -8322,8 +8321,31 @@ SetCurrentCharacter_PaletteLoop:
 	BCC SetCurrentCharacter_PaletteLoop
 
 SetCurrentCharacter_Update:
-	INC SkyFlashTimer
+	JSR UpdateCharacterPalette
 	JSR LoadCharacterCHRBanks
 
 ReturnFromSwap:
+	RTS
+
+; Write to the PPU to update the color palette at location $3F11-$3f13
+UpdateCharacterPalette:
+	LDX byte_RAM_300
+	LDA #$3F
+	STA PPUBuffer_301, X
+	LDA #$11
+	STA PPUBuffer_301 + 1, X
+	LDA #$03
+	STA PPUBuffer_301 + 2, X
+	LDA RestorePlayerPalette1
+	STA PPUBuffer_301 + 3, X
+	LDA RestorePlayerPalette2
+	STA PPUBuffer_301 + 4, X
+	LDA RestorePlayerPalette3
+	STA PPUBuffer_301 + 5, X
+	LDA #$00
+	STA PPUBuffer_301 + 6, X
+	TXA
+	CLC
+	ADC #$06
+	STA byte_RAM_300
 	RTS
