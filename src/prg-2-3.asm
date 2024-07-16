@@ -3626,6 +3626,8 @@ TurnIntoPuffOfSmoke:
 	AND #ObjAttrib_Horizontal | ObjAttrib_FrontFacing | ObjAttrib_Mirrored | ObjAttrib_BehindBackground | ObjAttrib_16x32 | ObjAttrib_UpsideDown
 	ORA #ObjAttrib_Palette1
 	STA ObjectAttributes, X
+	LDA SpriteFlags46E_Tilemap2 | SpriteFlags46E_Unliftable ; CHECK LATER, should fix BUG BUG
+	STA EnemyArray_46E, X
 	LDA #EnemyState_PuffOfSmoke
 	STA EnemyState, X ; WINNERS DON'T SMOKE SHROOMS
 	STA ObjectAnimationTimer, X ; No idea what this address is for
@@ -11097,6 +11099,23 @@ CheckCollisionWithPlayer_StandingOnHead:
 	AND #SpriteFlags46E_Unliftable
 	BNE CheckCollisionWithPlayer_NoLift
 
+CheckIfMario:
+	LDA CurrentCharacter
+	CMP #Character_Mario
+	BNE CheckBLiftable
+
+MarioStomp:
+	INC PlayerInAir ; Tell the game we are in the air now
+	LDA #$A8
+	STA PlayerYVelocity
+;	LDA #SpriteAnimation_Jumping
+;	STA PlayerAnimationFrame
+	JSR TurnIntoPuffOfSmoke ; Turn the enemy into smoke
+	LDA #SoundEffect1_EnemyHit
+	STA SoundEffectQueue1
+	BNE CheckCollisionWithPlayer_NoLift ; can be optimize maybe?
+
+CheckBLiftable:
 	; check B button
 	BIT Player1JoypadPress
 	BVC CheckCollisionWithPlayer_NoLift
