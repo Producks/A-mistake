@@ -186,6 +186,7 @@ ScreenUpdateBuffer_RAM_EndOfLevelDoor = $14
 ScreenUpdateBuffer_TitleCardLeftover = $15
 ScreenUpdateBuffer_PauseExtraLife = $16
 ScreenUpdateBuffer_RAM_BonusChanceLayout = $17
+ScreenUpdateBuffer_RAM_Text_Starting_Index = $18
 
 ; ---------------------------------------------------------------------------
 

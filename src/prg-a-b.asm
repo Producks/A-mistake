@@ -459,12 +459,12 @@ loc_BANKA_846B:
 	CPX #$04
 	BCC loc_BANKA_846B
 
-	LDY #$4C
+	LDY #$28
 loc_BANKA_8479:
-	LDA PlayerSelectPalettes, Y
-	STA PPUBuffer_TitleCardPalette, Y
+	LDA BonusChanceText_X_1, Y
+	STA PPUBuffer_BonusChanceCoinsExtraLife, Y
 	DEY
-	CPY #$FF
+	CPY #$FF ; Check later if BUG BUG; Skip copying palette that we don't need
 	BNE loc_BANKA_8479
 
 	LDY #$B6
@@ -558,6 +558,7 @@ WartOAMOffsets:
 	.db $E0
 	.db $FF ; Cycled in code ($726B)
 
+; FREE
 PlayerSelectPalettes:
 	.db $3F, $00, $20
 	.db $0F, $28, $16, $06

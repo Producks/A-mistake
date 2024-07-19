@@ -50,6 +50,8 @@ ScreenUpdateBufferPointers:
 	.dw PPUBuffer_TitleCardLeftover
 	.dw PPUBuffer_PauseExtraLife
 	.dw PPUBuffer_BonusChanceLayout
+	.dw PPUBuffer_WorldOne_One
+	.dw PPUBuffer_WorldOne_Two
 
 PPUBuffer_CharacterSelect:
 	.db $00
@@ -84,7 +86,7 @@ PPUBuffer_TitleCard:
 	.db $24, $83, $01, $D0
 	.db $24, $9C, $01, $D8
 	.db $24, $84, $58, $FB
-	.db $24, $A3, $D4, $D1
+	.db $24, $A3, $C2, $D1
 	.db $24, $BC, $D4, $D7
 	.db $24, $A4, $58, $FB
 	.db $24, $C4, $58, $FB
@@ -156,7 +158,7 @@ WorldStartingLevel:
 	.db $0F
 	.db $12
 	.db $14
-
+; FREE
 PlayerSelectMarioSprites1:
 	.db $8F, $00, $00, $48
 	.db $8F, $00, $40, $50
@@ -204,7 +206,7 @@ PlayerSelectPrincessSprites2:
 	.db $8F, $2A, $03, $B0
 	.db $9F, $2C, $03, $A8
 	.db $9F, $2E, $03, $B0
-
+;;;;;
 PlayerSelectSpriteIndexes:
 	.db $00, $30, $20, $10
 
@@ -231,6 +233,7 @@ PlayerSelectSpritePalettesDark:
 	.db $0F, $22, $12, $01
 	.db $0F, $22, $12, $01
 
+; FREE
 PlayerSelectPaletteOffsets:
 	.db (PlayerSelectSpritePalettes_Mario - PlayerSelectSpritePalettes)
 	.db (PlayerSelectSpritePalettes_Princess - PlayerSelectSpritePalettes)
@@ -250,7 +253,7 @@ PlayerSelectSpritePalettes_Toad:
 PlayerSelectSpritePalettes_Princess:
 	.db $3F, $1C, $04
 	.db $0F, $36, $25, $07
-
+;;;;;
 TitleCardPalettes:
 	.db $3F, $00, $20 ; PPU data
 	.db $38, $30, $1A, $0F
@@ -269,6 +272,13 @@ BonusChanceSpritePalettes:
 	.db $0F, $37, $16, $0F
 	.db $0F, $37, $16, $0F
 
+PPUBuffer_WorldOne_One:
+	.db $24, $9E, $D6, $FF
+	.db $00
+
+PPUBuffer_WorldOne_Two:
+	.db $24, $9A, $D6, $FF
+	.db $00
 
 ;
 ; Load A with an index and call this to
@@ -363,7 +373,8 @@ EnableNMI_PauseTitleCard:
 	STA ScreenUpdateIndex
 	JSR WaitForNMI
 
-	LDA #ScreenUpdateBuffer_TitleCard
+	LDA CurrentLevel
+	ADC #ScreenUpdateBuffer_RAM_Text_Starting_Index ; TEST
 	STA ScreenUpdateIndex
 
 	JMP WaitForNMI
@@ -563,7 +574,7 @@ PreStartLevel:
 
 
 ;
-;
+; Code was repeated after refacto, so made it a sub routine to save 3 instructions :)
 ;
 ScreenCardResetDisplay:
 	JSR ResetScreenForTitleCard
@@ -575,6 +586,7 @@ ScreenCardResetDisplay:
 	JSR DisplayLevelTitleCardText
 
 	RTS
+
 
 ;
 ; Runs the Character Select menu
