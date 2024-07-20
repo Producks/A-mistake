@@ -256,14 +256,14 @@ PlayerSelectSpritePalettes_Princess:
 ;;;;;
 TitleCardPalettes:
 	.db $3F, $00, $20 ; PPU data
-	.db $38, $30, $1A, $0F
+	.db $38, $30, $10, $00
 	.db $38, $38, $0F, $0F
 	.db $38, $17, $17, $38
 	.db $38, $28, $18, $08
-	.db $38, $30, $27, $01
-	.db $38, $37, $27, $06
-	.db $38, $25, $36, $06
-	.db $38, $12, $36, $01
+	.db $0F, $30, $27, $01
+	.db $0F, $37, $27, $06
+	.db $0F, $25, $36, $06
+	.db $0F, $12, $36, $01
 	.db $00
 
 BonusChanceSpritePalettes:
@@ -273,11 +273,13 @@ BonusChanceSpritePalettes:
 	.db $0F, $37, $16, $0F
 
 PPUBuffer_WorldOne_One:
-	.db $24, $9E, $D6, $FF
+	.db $25, $69, $1C
+	.db $07, $21, $5C, $2C, $20, $21, $2B, $5C, $21, $2B, $5C, $19, $5C, $2C, $1D, $2B, $2C, $3F, $34, $35, $36, $37, $38, $39, $3A, $3B, $3C, $3D
 	.db $00
 
 PPUBuffer_WorldOne_Two:
-	.db $24, $9A, $D6, $FF
+	.db $24, $69, $04
+	.db $6D, $5E, $6C, $6D
 	.db $00
 
 ;
@@ -552,7 +554,7 @@ DisplayLevelTitleCardAndMore_TitleCardPaletteLoop:
 PreLevelTitleCard_PauseLoop:
 	JSR WaitForNMI
 	DEC byte_RAM_2
-	BPL PreLevelTitleCard_PauseLoop
+	JMP PreLevelTitleCard_PauseLoop
 
 PreStartLevel:
 	JSR SetStack100Gameplay
@@ -5647,7 +5649,7 @@ TitleCardCHRBanks:
 ChangeTitleCardCHR:
 	LDY CurrentWorld
 	LDA TitleCardCHRBanks, Y
-	STA BackgroundCHR2
+	STA BackgroundCHR1
 	RTS
 
 
