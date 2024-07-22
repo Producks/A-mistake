@@ -52,6 +52,25 @@ ScreenUpdateBufferPointers:
 	.dw PPUBuffer_BonusChanceLayout
 	.dw PPUBuffer_WorldOne_One
 	.dw PPUBuffer_WorldOne_Two
+	.dw PPUBuffer_WorldOne_Three
+	.dw PPUBuffer_WorldTwo_One
+	.dw PPUBuffer_WorldTwo_Two
+	.dw PPUBuffer_WorldTwo_Three
+	.dw PPUBuffer_WorldThree_One
+	.dw PPUBuffer_WorldThree_Two
+	.dw PPUBuffer_WorldThree_Three
+	.dw PPUBuffer_WorldFour_One
+	.dw PPUBuffer_WorldFour_Two
+	.dw PPUBuffer_WorldFour_Three
+	.dw PPUBuffer_WorldFive_One
+	.dw PPUBuffer_WorldFive_Two
+	.dw PPUBuffer_WorldFive_Three
+	.dw PPUBuffer_WorldSix_One
+	.dw PPUBuffer_WorldSix_Two
+	.dw PPUBuffer_WorldSix_Three
+	.dw PPUBuffer_WorldSeven_One
+	.dw PPUBuffer_WorldSeven_Two
+	.dw PPUBuffer_WorldSeven_Three
 
 PPUBuffer_CharacterSelect:
 	.db $00
@@ -272,15 +291,6 @@ BonusChanceSpritePalettes:
 	.db $0F, $37, $16, $0F
 	.db $0F, $37, $16, $0F
 
-PPUBuffer_WorldOne_One:
-	.db $25, $69, $1C
-	.db $07, $21, $5C, $2C, $20, $21, $2B, $5C, $21, $2B, $5C, $19, $5C, $2C, $1D, $2B, $2C, $3F, $34, $35, $36, $37, $38, $39, $3A, $3B, $3C, $3D
-	.db $00
-
-PPUBuffer_WorldOne_Two:
-	.db $24, $69, $04
-	.db $6D, $5E, $6C, $6D
-	.db $00
 
 ;
 ; Load A with an index and call this to
@@ -549,12 +559,10 @@ DisplayLevelTitleCardAndMore_TitleCardPaletteLoop:
 	JSR RestorePlayerToFullHealth
 
 	; Pause for the title card
-	LDA #$50
-	STA byte_RAM_2
 PreLevelTitleCard_PauseLoop:
 	JSR WaitForNMI
-	DEC byte_RAM_2
-	JMP PreLevelTitleCard_PauseLoop
+	LDA Player1JoypadPress
+	BEQ PreLevelTitleCard_PauseLoop
 
 PreStartLevel:
 	JSR SetStack100Gameplay
@@ -579,6 +587,9 @@ PreStartLevel:
 ; Code was repeated after refacto, so made it a sub routine to save 3 instructions :)
 ;
 ScreenCardResetDisplay:
+	LDA #PRGBank_A_B ; Added because bank problem...
+	JSR ChangeMappedPRGBank
+
 	JSR ResetScreenForTitleCard
 
 	JSR EnableNMI_PauseTitleCard

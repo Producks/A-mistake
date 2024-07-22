@@ -687,11 +687,11 @@ TitleCardText:
 	.db $FB, $FB, $FB, $FB, $FB, $FB, $FB
 	; WORLD  1-1
 	.db $24, $CA, $0B
-	.db $FB, $F0, $E8, $EB, $E5, $DD, $FB, $FB, $D1, $F3, $D1
+	.db $5C, $15, $27, $2A, $24, $1C, $5C, $5C, $35, $45, $35
 	; EXTRA LIFE...  0
-	.db $23, $48, $10
-	.db $DE, $F1, $ED, $EB, $DA, $FB, $E5, $E2, $DF, $DE
-	.db $F9, $F9, $F9, $FB, $FB, $D0
+	.db $27, $48, $10
+	.db $03, $1D, $19, $2C, $20, $5C, $1B, $27, $2D, $26
+	.db $2C, $5C, $5C, $5C, $5C, $D0
 	.db $00
 
 Text_WARP:
@@ -719,6 +719,77 @@ UnusedText_Blank214D:
 	.db $21, $4D, $06
 	.db $FB, $FB, $FB, $FB, $FB, $FB
 	.db $00
+
+PPUBuffer_WorldOne_One:
+	.db $25, $69, $1C
+	.db $07, $21, $5C, $2C, $20, $21, $2B, $5C, $21, $2B, $5C, $19, $5C, $2C, $1D, $2B, $2C, $3F, $34, $35, $36, $37, $38, $39, $3A, $3B, $3C, $3D
+	.db $00
+
+PPUBuffer_WorldOne_Two:
+	.db $24, $69, $04
+	.db $6D, $5E, $6C, $6D
+	.db $00
+
+PPUBuffer_WorldOne_Three:
+	.db $00
+
+PPUBuffer_WorldTwo_One:
+    .db $00
+
+PPUBuffer_WorldTwo_Two:
+    .db $00
+
+PPUBuffer_WorldTwo_Three:
+    .db $00
+
+PPUBuffer_WorldThree_One:
+    .db $00
+
+PPUBuffer_WorldThree_Two:
+    .db $00
+
+PPUBuffer_WorldThree_Three:
+    .db $00
+
+PPUBuffer_WorldFour_One:
+    .db $00
+
+PPUBuffer_WorldFour_Two:
+    .db $00
+
+PPUBuffer_WorldFour_Three:
+    .db $00
+
+PPUBuffer_WorldFive_One:
+    .db $25, $69, $1C
+	.db $07, $21, $5C, $2C, $20, $21, $2B, $5C, $21, $2B, $5C, $19, $5C, $2C, $1D, $2B, $2C, $3F, $34, $35, $36, $37, $38, $39, $3A, $3B, $3C, $3D
+	.db $00
+
+PPUBuffer_WorldFive_Two:
+    .db $00
+
+PPUBuffer_WorldFive_Three:
+    .db $00
+
+PPUBuffer_WorldSix_One:
+	.db $25, $69, $1C
+	.db $07, $21, $5C, $2C, $20, $21, $2B, $5C, $21, $2B, $5C, $19, $5C, $2C, $1D, $2B, $2C, $3F, $34, $35, $36, $37, $38, $39, $3A, $3B, $3C, $3D
+	.db $00
+
+PPUBuffer_WorldSix_Two:
+    .db $00
+
+PPUBuffer_WorldSix_Three:
+    .db $00
+
+PPUBuffer_WorldSeven_One:
+    .db $00
+
+PPUBuffer_WorldSeven_Two:
+    .db $00
+
+PPUBuffer_WorldSeven_Three:
+    .db $00
 
 IFDEF CONTROLLER_2_DEBUG
 ;
