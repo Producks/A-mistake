@@ -403,20 +403,23 @@ DisplayLevelTitleCardText:
 	; Level number (unused)
 	; In Doki Doki Panic, this was displayed as a page number, keeping with
 	; the storybook motif.
-	INY
-	TYA
-	JSR GetTwoDigitNumberTiles
+	;	LDX CurrentWorld
+	;	LDY CurrentLevel
+;	INY
+;	TYA 
+;	JSR GetTwoDigitNumberTiles
 
 	; World number
 	INX
 	TXA
-	ORA #$D0
+;	ORA #$D0
+	ADC #$02
 	STA TitleCard_World
 
 	; Extra Life number
-	LDY ExtraLives
-	DEY
-	TYA
+	LDA ExtraLives
+;	DEY The game display 00 has valid extralife 01. I want to start the count at 00 not 01
+;	TYA Why this? Why not just load in the acumulator?
 	JSR GetTwoDigitNumberTiles
 	STY TitleCard_Lives
 	STA TitleCard_Lives + 1
@@ -436,7 +439,7 @@ DisplayLevelTitleCardText_ResetLevelDotsLoop:
 	SBC WorldStartingLevel, Y
 	STA CurrentLevelRelative
 	CLC
-	ADC #$D1
+	ADC #$03
 	STA TitleCard_Level
 
 	; Use the difference between the starting level of the next world and this
@@ -450,11 +453,11 @@ DisplayLevelTitleCardText_ResetLevelDotsLoop:
 	LDX #$00
 	LDY #$00
 DisplayLevelTitleCardText_DrawLevelDotsLoop:
-	LDA #$FD ; other level
+	LDA #$7E ; other level
 	CPX CurrentLevelRelative
 	BNE DisplayLevelTitleCardText_DrawLevelDot
 
-	LDA #$F6 ; current level
+	LDA #$48 ; current level
 
 DisplayLevelTitleCardText_DrawLevelDot:
 	STA TitleCard_LevelDots, Y
@@ -1827,24 +1830,26 @@ sub_BANKF_EA68:
 ; - `A`: second digit of the number (ones)
 ; - `Y`: first digit of the number (tens)
 ;
+; Converted to hexadecimal! Can't be asked having to deal with more than 2 digits
 GetTwoDigitNumberTiles:
-	LDY #$D0 ; zero
+	LDY #$02 ; zero
 
 GetTwoDigitNumberTiles_TensLoop:
 	; Count up the tens digit until A < 10
-	CMP #$0A
+	CMP #$10
 	BCC GetTwoDigitNumberTiles_Ones
 
-	SBC #$0A
+	SBC #$10
 	INY
 	JMP GetTwoDigitNumberTiles_TensLoop
 
 GetTwoDigitNumberTiles_Ones:
-	ORA #$D0
-	CPY #$D0
-	BNE GetTwoDigitNumberTiles_Exit
+;	ORA #$D0
+;	CPY #$D0
+;	BNE GetTwoDigitNumberTiles_Exit
 
-	LDY #$FB
+;	LDY #$FB
+	ADC #$02
 
 GetTwoDigitNumberTiles_Exit:
 	RTS

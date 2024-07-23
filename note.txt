@@ -1,0 +1,19 @@
+6502 notes
+
+Status Register Flags (bit 7 to bit 0)
+N	Negative
+V	Overflow
+-	ignored
+B	Break
+D	Decimal (use BCD for arithmetics)
+I	Interrupt (IRQ disable)
+Z	Zero
+C	Carry
+
+
+If the Z flag is 0, then A <> NUM and BNE will branch
+If the Z flag is 1, then A = NUM and BEQ will branch
+If the C flag is 0, then A (unsigned) < NUM (unsigned) and BCC will branch
+If the C flag is 1, then A (unsigned) >= NUM (unsigned) and BCS will branch
+
+http://www.6502.org/tutorials/compare_beyond.html
