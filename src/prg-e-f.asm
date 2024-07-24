@@ -1107,7 +1107,7 @@ ShowCardAfterTransition:
 	LDA #$FF
 	STA CurrentMusicIndex
 	; Draw EXTRA LIFE text near top of card
-	LDA #$25
+	LDA #$27 ; FUCK OFF LMAO, been trying to fix this bug for hour
 	STA TitleCard_ExtraLife_DrawAddress
 	LDA #$48
 	STA TitleCard_ExtraLife_DrawAddress + 1
@@ -5651,21 +5651,27 @@ LoadCelebrationSceneBackgroundCHR:
 	STA BackgroundCHR2
 	RTS
 
-
-TitleCardCHRBanks:
-	.db CHRBank_TitleCardGrass
-	.db CHRBank_TitleCardDesert
-	.db CHRBank_TitleCardGrass
-	.db CHRBank_TitleCardIce
-	.db CHRBank_TitleCardGrass
-	.db CHRBank_TitleCardDesert
-	.db CHRBank_TitleCardSky
-
-
+;
+; Hotswap to the correct bank for special drawing. Range is 0-6, 7-D, F-End
+;
 ChangeTitleCardCHR:
-	LDY CurrentWorld
-	LDA TitleCardCHRBanks, Y
+	LDA #CHRBank_Font
 	STA BackgroundCHR1
+	LDY CurrentLevel
+	INY ; Increase because CPM become an issue if level is 00
+	CPY #$08 ; Branch if X register is greater than 08 "0-7"
+	BCS CheckSecondBankTitleCardCHR	
+	LDA #CHRBank_TitleCardDesert
+	BCC RetChangeTitleCardCHR
+CheckSecondBankTitleCardCHR:
+	CPY #$0F ; Brance if Y register is greater than 15
+	BCS ItsThirdBankTitleCardChr
+	LDA #CHRBank_TitleCardIce
+	BCC RetChangeTitleCardCHR
+ItsThirdBankTitleCardChr:
+	LDA #CHRBank_TitleCardSky
+RetChangeTitleCardCHR:
+	STA BackgroundCHR2
 	RTS
 
 

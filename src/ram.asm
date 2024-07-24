@@ -834,6 +834,7 @@ PreviousCharacter:
 PreviousWorld:
 	.dsb 1 ; $0405
 ; FOR RENT
+TempRamValue:
 	.dsb 1 ; $0406
 
 PlayerXSubpixel:

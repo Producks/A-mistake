@@ -828,7 +828,7 @@ CHRBank_ChanceBG2 = $36
 CHRBank_CelebrationBG1 = $38
 CHRBank_CelebrationBG2 = $3A
 
-CHRBank_TitleCardGrass = $40
+CHRBank_Font = $40
 CHRBank_TitleCardDesert = $42
 CHRBank_TitleCardIce = $44
 CHRBank_TitleCardSky = $46
