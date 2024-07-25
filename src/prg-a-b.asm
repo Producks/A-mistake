@@ -11,37 +11,6 @@
 ;   - Character stats bootstrapping
 ;
 
-;
-; This title card is used for every world from 1 to 6.
-; The only difference is the loaded CHR banks.
-;
-World1thru6TitleCard:
-	.db $FB, $FB, $B0, $B2, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB
-	.db $FB, $FB, $B1, $B3, $FB, $FB, $FB, $FB, $FB, $FB, $C0, $C1, $FB, $FB, $FB, $FB ; $10
-	.db $FB, $FB, $B4, $B5, $FB, $FB, $FB, $FB, $B6, $B8, $BA, $B8, $BA, $BC, $FB, $FB ; $20
-	.db $FB, $FB, $B4, $B5, $FB, $FB, $FB, $FB, $B7, $B9, $BB, $B9, $BB, $BD, $FB, $FB ; $30
-	.db $FB, $FB, $B4, $B5, $FB, $FB, $FB, $FB, $B7, $B9, $BB, $B9, $BB, $BD, $FB, $FB ; $40
-	.db $FB, $FB, $B4, $B5, $C0, $C1, $FB, $FB, $B7, $B9, $BB, $B9, $BB, $BD, $FB, $FB ; $50
-	.db $CA, $CC, $CA, $CC, $CA, $CC, $CA, $CC, $CA, $CC, $CA, $CC, $CA, $CC, $CA, $CC ; $60
-	.db $CB, $CD, $CB, $CD, $CB, $CD, $CB, $CD, $CB, $CD, $CB, $CD, $CB, $CD, $CB, $CD ; $70
-	.db $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF ; $80
-	.db $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE, $CF, $CE ; $90
-
-;
-; This one is the special one used for World 7
-;
-World7TitleCard:
-	.db $FB, $FB, $B0, $B2, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB
-	.db $FB, $FB, $B1, $B3, $FB, $FB, $FB, $FB, $FB, $FB, $C0, $C1, $FB, $FB, $FB, $FB ; $10
-	.db $FB, $FB, $B1, $B3, $FB, $FB, $FB, $FB, $B6, $B8, $BA, $B8, $BA, $BC, $FB, $FB ; $20
-	.db $FB, $FB, $B1, $B3, $FB, $FB, $FB, $FB, $B7, $B9, $BB, $B9, $BB, $BD, $FB, $FB ; $30
-	.db $FB, $FB, $B1, $B3, $FB, $FB, $FB, $FB, $CA, $FC, $FC, $FC, $FC, $CC, $FB, $FB ; $40
-	.db $FB, $FB, $B1, $B3, $C0, $C1, $FB, $FB, $CA, $FC, $FC, $FC, $FC, $CC, $FB, $FB ; $50
-	.db $A8, $AC, $AA, $AC, $AA, $AC, $AA, $AC, $AA, $AC, $AA, $AC, $AA, $AC, $AA, $AE ; $60
-	.db $A9, $AD, $AB, $AD, $AB, $AD, $AB, $AD, $AB, $AD, $AB, $AD, $AB, $AD, $AB, $AF ; $70
-	.db $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB ; $80
-	.db $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB ; $90
-
 BonusChanceLayout:
 	.db $20, $00, $60, $FD
 	.db $20, $20, $60, $FD
@@ -149,114 +118,35 @@ CopyBonusChanceLayoutToRAM_Loop2:
 ; =============== S U B R O U T I N E =======================================
 
 DrawTitleCardWorldImage:
-	LDA CurrentWorld
-	CMP #6
-	BEQ loc_BANKA_8392 ; Special case for World 7's title card
-
-	LDA #$25
-	STA byte_RAM_0
-	LDA #$C8
+	LDY #$00 ; Counter for 4 turn
+	LDA CurrentLevel
+	ASL
+	TAX
+	LDA LookupTableIconTitleCard + 1, X
 	STA byte_RAM_1
-	LDY #$00
-
-loc_BANKA_8338:
-	LDX #$0F
-	LDA PPUSTATUS
-	LDA byte_RAM_0
-	STA PPUADDR
-
-loc_BANKA_8342:
-	LDA byte_RAM_1
-	STA PPUADDR
-
-loc_BANKA_8347:
-	LDA World1thru6TitleCard, Y
-	STA PPUDATA
-	INY
-	DEX
-	BPL loc_BANKA_8347
-
-	CPY #$A0
-	BCS loc_BANKA_8364
-
-	LDA byte_RAM_1
-	ADC #$20
-	STA byte_RAM_1
-	LDA byte_RAM_0
-	ADC #0
+	LDA LookupTableIconTitleCard, X
 	STA byte_RAM_0
-	JMP loc_BANKA_8338
-
-; ---------------------------------------------------------------------------
-
-loc_BANKA_8364:
-	LDA CurrentWorld
-	CMP #1
-	BEQ loc_BANKA_8371
-
-	CMP #5
-	BEQ loc_BANKA_8371
-
-	BNE loc_BANKA_8389
-
-loc_BANKA_8371:
-	AND #$80
-	BNE loc_BANKA_8389
-
+	LDA (byte_RAM_0), Y ; Pre load pointer
+	LDA #$0D ; $262D
+	STA TempRamValue
+PresetLoopDrawTitleCardImage:
 	LDA #$26
-	STA byte_RAM_0
-	LDA #$88
-	STA byte_RAM_1
-	LDA CurrentWorld
-	ORA #$80
-	STA CurrentWorld
-	LDY #$80
-	BNE loc_BANKA_8338
-
-loc_BANKA_8389:
-	LDA CurrentWorld
-	AND #$F
-	STA CurrentWorld
-	RTS
-
-; ---------------------------------------------------------------------------
-
-loc_BANKA_8392:
-	LDA #$25
-	STA byte_RAM_0
-	LDA #$C8
-	STA byte_RAM_1
-	LDY #0
-
-loc_BANKA_839C:
-	LDX #$F
-	LDA PPUSTATUS
-	LDA byte_RAM_0
 	STA PPUADDR
-	LDA byte_RAM_1
-	STA PPUADDR
-
-loc_BANKA_83AB:
-	LDA World7TitleCard, Y
-	STA PPUDATA
-	INY
-	DEX
-	BPL loc_BANKA_83AB
-
-	CPY #$A0
-	BCS locret_BANKA_83C8
-
-	LDA byte_RAM_1
+	LDA TempRamValue
 	ADC #$20
-	STA byte_RAM_1
-	LDA byte_RAM_0
-	ADC #0
-	STA byte_RAM_0
-	JMP loc_BANKA_839C
-
-; ---------------------------------------------------------------------------
-
-locret_BANKA_83C8:
+	STA PPUADDR
+	STA TempRamValue
+	LDA (byte_RAM_0), Y ; Pre load pointer
+	LDX #$00
+LoopTitleCardWorldImage:
+	STA PPUDATA
+	ADC #$02
+	INX
+	CPX #$04
+	BNE LoopTitleCardWorldImage
+	INY ; Increase counter for 4 value
+	CPY #$04
+	BNE PresetLoopDrawTitleCardImage
 	RTS
 
 ; End of function DrawTitleCardWorldImage
@@ -459,12 +349,12 @@ loc_BANKA_846B:
 	CPX #$04
 	BCC loc_BANKA_846B
 
-	LDY #$4C
+	LDY #$28
 loc_BANKA_8479:
-	LDA PlayerSelectPalettes, Y
-	STA PPUBuffer_TitleCardPalette, Y
+	LDA BonusChanceText_X_1, Y
+	STA PPUBuffer_BonusChanceCoinsExtraLife, Y
 	DEY
-	CPY #$FF
+	CPY #$FF ; Check later if BUG BUG; Skip copying palette that we don't need
 	BNE loc_BANKA_8479
 
 	LDY #$B6
@@ -558,6 +448,7 @@ WartOAMOffsets:
 	.db $E0
 	.db $FF ; Cycled in code ($726B)
 
+; FREE
 PlayerSelectPalettes:
 	.db $3F, $00, $20
 	.db $0F, $28, $16, $06
@@ -686,11 +577,10 @@ TitleCardText:
 	.db $FB, $FB, $FB, $FB, $FB, $FB, $FB
 	; WORLD  1-1
 	.db $24, $CA, $0B
-	.db $FB, $F0, $E8, $EB, $E5, $DD, $FB, $FB, $D1, $F3, $D1
+	.db $7C, $22, $34, $37, $31, $29, $7C, $7C, $02, $47, $02
 	; EXTRA LIFE...  0
-	.db $23, $48, $10
-	.db $DE, $F1, $ED, $EB, $DA, $FB, $E5, $E2, $DF, $DE
-	.db $F9, $F9, $F9, $FB, $FB, $D0
+	.db $27, $48, $10
+	.db $0F, $2A, $26, $39, $2D, $7C, $28, $34, $3A, $33, $39, $7C, $7C, $7C, $02, $02
 	.db $00
 
 Text_WARP:
@@ -718,6 +608,121 @@ UnusedText_Blank214D:
 	.db $21, $4D, $06
 	.db $FB, $FB, $FB, $FB, $FB, $FB
 	.db $00
+
+PPUBuffer_WorldOne_One:
+	.db $25, $69, $1C
+	.db $13, $2E, $41, $7C, $1F, $2D, $2E, $38, $7C, $2E, $38, $7C, $26, $7C, $39, $2A, $38, $39, $02, $03, $04, $05, $06, $07, $08, $09, $0A, $0B
+	.db $00
+
+PPUBuffer_WorldOne_Two:
+	.db $24, $69, $04
+	.db $6D, $5E, $6C, $6D
+	.db $00
+
+PPUBuffer_WorldOne_Three:
+	.db $00
+
+PPUBuffer_WorldTwo_One:
+    .db $00
+
+PPUBuffer_WorldTwo_Two:
+    .db $00
+
+PPUBuffer_WorldTwo_Three:
+    .db $00
+
+PPUBuffer_WorldThree_One:
+    .db $00
+
+PPUBuffer_WorldThree_Two:
+    .db $00
+
+PPUBuffer_WorldThree_Three:
+    .db $00
+
+PPUBuffer_WorldFour_One:
+    .db $00
+
+PPUBuffer_WorldFour_Two:
+    .db $00
+
+PPUBuffer_WorldFour_Three:
+    .db $00
+
+PPUBuffer_WorldFive_One:
+    .db $25, $69, $1C
+	.db $07, $21, $5C, $2C, $20, $21, $2B, $5C, $21, $2B, $5C, $19, $5C, $2C, $1D, $2B, $2C, $3F, $34, $35, $36, $37, $38, $39, $3A, $3B, $3C, $3D
+	.db $00
+
+PPUBuffer_WorldFive_Two:
+    .db $00
+
+PPUBuffer_WorldFive_Three:
+    .db $00
+
+PPUBuffer_WorldSix_One:
+	.db $25, $69, $1C
+	.db $07, $21, $5C, $2C, $20, $21, $2B, $5C, $21, $2B, $5C, $19, $5C, $2C, $1D, $2B, $2C, $3F, $34, $35, $36, $37, $38, $39, $3A, $3B, $3C, $3D
+	.db $00
+
+PPUBuffer_WorldSix_Two:
+    .db $00
+
+PPUBuffer_WorldSix_Three:
+    .db $00
+
+PPUBuffer_WorldSeven_One:
+    .db $00
+
+PPUBuffer_WorldSeven_Two:
+    .db $00
+
+PPUBuffer_WorldSeven_Three:
+    .db $00
+
+LookupTableIconTitleCard:
+	.dw PPUBuffer_FirstIconTitleCard
+	.dw PPUBuffer_SecondIconTitleCard
+	.dw PPUBuffer_ThirdIconTitleCard
+	.dw PPUBuffer_FourthIconTitleCard
+	.dw PPUBuffer_FithIconTitleCard
+	.dw PPUBuffer_SixIconTitleCard
+	.dw PPUBuffer_SevenIconTitleCard
+	.dw PPUBuffer_FirstIconTitleCard
+	.dw PPUBuffer_SecondIconTitleCard
+	.dw PPUBuffer_ThirdIconTitleCard
+	.dw PPUBuffer_FourthIconTitleCard
+	.dw PPUBuffer_FithIconTitleCard
+	.dw PPUBuffer_SixIconTitleCard
+	.dw PPUBuffer_SevenIconTitleCard
+	.dw PPUBuffer_FirstIconTitleCard
+	.dw PPUBuffer_SecondIconTitleCard
+	.dw PPUBuffer_ThirdIconTitleCard
+	.dw PPUBuffer_FourthIconTitleCard
+	.dw PPUBuffer_FithIconTitleCard
+	.dw PPUBuffer_SixIconTitleCard
+	.dw PPUBuffer_SevenIconTitleCard
+
+PPUBuffer_FirstIconTitleCard:
+	.db $80, $81, $A0, $A1
+
+PPUBuffer_SecondIconTitleCard:
+	.db $88, $89, $A8, $A9
+
+PPUBuffer_ThirdIconTitleCard:
+	.db $90, $91, $B0, $B1
+
+PPUBuffer_FourthIconTitleCard:
+	.db $98, $99, $B8, $B9
+
+PPUBuffer_FithIconTitleCard:
+	.db $C0, $C1, $B8, $B9
+
+PPUBuffer_SixIconTitleCard:
+	.db $C8, $C9, $E8, $E9
+
+PPUBuffer_SevenIconTitleCard:
+	.db $D0, $D1, $F0, $F1
 
 IFDEF CONTROLLER_2_DEBUG
 ;

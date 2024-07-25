@@ -50,132 +50,33 @@ ScreenUpdateBufferPointers:
 	.dw PPUBuffer_TitleCardLeftover
 	.dw PPUBuffer_PauseExtraLife
 	.dw PPUBuffer_BonusChanceLayout
+	.dw PPUBuffer_WorldOne_One
+	.dw PPUBuffer_WorldOne_Two
+	.dw PPUBuffer_WorldOne_Three
+	.dw PPUBuffer_WorldTwo_One
+	.dw PPUBuffer_WorldTwo_Two
+	.dw PPUBuffer_WorldTwo_Three
+	.dw PPUBuffer_WorldThree_One
+	.dw PPUBuffer_WorldThree_Two
+	.dw PPUBuffer_WorldThree_Three
+	.dw PPUBuffer_WorldFour_One
+	.dw PPUBuffer_WorldFour_Two
+	.dw PPUBuffer_WorldFour_Three
+	.dw PPUBuffer_WorldFive_One
+	.dw PPUBuffer_WorldFive_Two
+	.dw PPUBuffer_WorldFive_Three
+	.dw PPUBuffer_WorldSix_One
+	.dw PPUBuffer_WorldSix_Two
+	.dw PPUBuffer_WorldSix_Three
+	.dw PPUBuffer_WorldSeven_One
+	.dw PPUBuffer_WorldSeven_Two
+	.dw PPUBuffer_WorldSeven_Three
 
 PPUBuffer_CharacterSelect:
-	.db $21, $49, $06, $E9, $E5, $DE, $DA, $EC, $DE ; PLEASE
-	.db $21, $50, $06, $EC, $DE, $E5, $DE, $DC, $ED ; SELECT
-	.db $21, $8C, $06, $E9, $E5, $DA, $F2, $DE, $EB ; PLAYER
-	.db $20, $00, $20, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8 ; Probably the checkerboard diamonds or w/e
-	.db $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7 ; $F
-	.db $B8, $B7, $B8, $B7, $B8 ; $1E
-	.db $20, $20, $20, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA
-	.db $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9 ; $F
-	.db $BA, $B9, $BA, $B9, $BA ; $1E
-	.db $23, $80, $20, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8
-	.db $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7, $B8, $B7 ; $F
-	.db $B8, $B7, $B8, $B7, $B8 ; $1E
-	.db $23, $A0, $20, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA
-	.db $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9, $BA, $B9 ; $F
-	.db $BA, $B9, $BA, $B9, $BA ; $1E
-	.db $20, $00, $9E, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9
-	.db $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7 ; $F
-	.db $B9, $B7, $B9 ; $1E
-	.db $20, $01, $9E, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA
-	.db $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8 ; $F
-	.db $BA, $B8, $BA ; $1E
-	.db $20, $1E, $9E, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9
-	.db $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7, $B9, $B7 ; $F
-	.db $B9, $B7, $B9 ; $1E
-	.db $20, $1F, $9E, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA
-	.db $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8, $BA, $B8 ; $F
-	.db $BA, $B8, $BA ; $1E
-	.db $20, $42, $5C, $FD
-	.db $20, $62, $5C, $FD
-	.db $20, $47, $05, $00, $01, $02, $03,4
-	.db $20, $54, $05, $05, $06, $07, $08,9
-	.db $20, $63, $0A, $A,$0B, $C,$0D, $E,$0F, $10, $11, $12, $13
-	.db $20, $73, $0A, $14, $15, $16, $17, $18, $19, $1A, $1B, $1C, $1D
-	.db $20, $82, $1C, $1E, $1F, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29
-	.db $FD, $FD, $FD, $FD, $2A, $2B, $2C, $2D, $2E, $2F, $30, $31, $32, $33, $34 ; $F
-	.db $35 ; $1E
-	.db $20, $A2, $06, $36, $37, $38, $39, $3A, $3B
-	.db $20, $AB, $0A, $3C, $3D, $3E, $3F, $40, $43, $44, $45, $46, $47
-	.db $20, $B8, $06, $48, $49, $4A, $4B, $4C, $4D
-	.db $20, $C2, $05, $4E, $4F, $50, $51, $52
-	.db $20, $D9, $05, $53, $54, $55, $56, $57
-	.db $20, $E2, $04, $58, $59, $5A, $5B
-	.db $20, $E6, $CD, $5C
-	.db $20, $F9, $CD, $5C
-	.db $20, $FA, $04, $5D, $5E, $5F, $60
-	.db $21, $02, $83, $61, $64, $67
-	.db $21, $03, $8B, $62, $65, $68, $6A, $6C, $6F, $72, $75, $78, $7B, $7E
-	.db $21, $04, $94, $63, $66, $69, $6B, $6D, $70, $73, $76, $79, $7C, $7F, $81
-	.db $82, $83, $84, $85, $86, $87, $88, $89 ; $F
-	.db $21, $85, $89, $6E, $71, $74, $77, $7A, $7D, $80, $6E, $6E
-	.db $21, $9A, $89, $97, $9A, $9D, $BB, $A0, $A3, $A6, $A9, $AB
-	.db $21, $1B, $94, $8C, $8F, $92, $95, $98, $9B, $9E, $BC, $A1, $A4, $A7, $AA
-	.db $AC, $AD, $AE, $B0, $B1, $B2, $B3, $B4 ; $F
-	.db $21, $1C, $8B, $8D, $90, $93, $96, $99, $9C, $9F, $BD, $A2, $A5, $A8
-	.db $21, $1D, $83, $8E, $91, $94
-	.db $21, $62, $D1, $FD
-	.db $21, $7D, $D1, $FD
-	.db $22, $63, $C9, $FD, $22, $7C, $C9, $FD, $22, $86, $82, $8A, $8B, $22, $99
-	.db $82, $8A, $8B ; $F
 	.db $00
 
+; Check later if it's really needed
 PPUBuffer_TitleCard:
-	.db $23, $C0, $09
-	.db $3E, $0E, $0E, $0E, $0E, $0E, $0E, $8E, $32
-	.db $23, $CF, $01, $8C
-	.db $23, $D0, $10
-	.db $32, $00, $A0, $A0, $A0, $20, $00, $8C, $32, $00, $00, $0A, $02, $00, $00, $8C
-	.db $23, $E0, $09
-	.db $32, $00, $00, $0E, $00, $00, $00, $8C, $32
-	.db $23, $EF, $01, $8C
-	.db $23, $F0, $06
-	.db $32, $00, $A0, $A0, $A0, $A0
-	.db $23, $F7, $09
-	.db $8C, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E
-	.db $24, $00, $60, $FF
-	.db $24, $20, $60, $FF
-	.db $24, $40, $60, $FF
-	.db $24, $60, $60, $FF
-	.db $27, $40, $60, $FF
-	.db $27, $60, $60, $FF
-	.db $27, $80, $60, $FF
-	.db $27, $A0, $60, $FF
-	.db $24, $80, $D6, $FF
-	.db $24, $81, $D6, $FF
-	.db $24, $82, $D6, $FF
-	.db $24, $9D, $D6, $FF
-	.db $24, $9E, $D6, $FF
-	.db $24, $9F, $D6, $FF
-	.db $24, $83, $01, $D0
-	.db $24, $9C, $01, $D8
-	.db $24, $84, $58, $FB
-	.db $24, $A3, $D4, $D1
-	.db $24, $BC, $D4, $D7
-	.db $24, $A4, $58, $FB
-	.db $24, $C4, $58, $FB
-	.db $24, $E4, $58, $FB
-	.db $25, $04, $58, $FB
-	.db $25, $24, $58, $FB
-	.db $25, $44, $58, $FB
-	.db $25, $64, $58, $FB
-	.db $25, $84, $58, $FB
-	.db $25, $A4, $58, $FB
-	.db $25, $C4, $58, $FB
-	.db $25, $E4, $58, $FB
-	.db $26, $04, $58, $FB
-	.db $26, $24, $58, $FB
-	.db $26, $44, $58, $FB
-	.db $26, $64, $58, $FB
-	.db $26, $84, $58, $FB
-	.db $26, $A4, $58, $FB
-	.db $26, $C4, $58, $FB
-	.db $26, $E4, $58, $FB
-	.db $27, $23, $01, $D2
-	.db $27, $3C, $01, $D6
-	.db $27, $24, $58, $D3
-	.db $27, $C8, $08
-	.db $44, $FF, $BF, $AF, $AF, $AF, $FF, $11
-	.db $27, $D0, $10
-	.db $44, $BF, $AF, $AF, $AF, $AF, $EF, $11, $44, $FF, $FF, $FF, $FF, $FF, $FF, $11
-	.db $27, $E0, $10
-	.db $44, $FF, $FF, $FF, $FF, $FF, $FF, $11, $44, $FF, $FF, $FF, $FF, $FF, $AF, $11
-	.db $27, $F0, $08
-	.db $44, $05, $05, $05, $05, $05, $05, $01
-	.db $27, $04, $58, $FB
 	.db $00
 
 ; nametable attribute data
@@ -186,20 +87,6 @@ PPUBuffer_PauseExtraLife:
 ; This draws two columns of black tiles along the right side of the nametable to the left of the
 ; title card, which was the character/level select in Doki Doki Panic. In SMB2, it remains unused.
 PPUBuffer_TitleCardLeftover:
-	.db $20, $1E, $9E
-	.db $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-	.db $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-	.db $20, $1F, $9E
-	.db $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-	.db $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-	.db $23, $C7, $01, $00
-	.db $23, $CF, $01, $00
-	.db $23, $D7, $01, $00
-	.db $23, $DF, $01, $00
-	.db $23, $E7, $01, $00
-	.db $23, $EF, $01, $00
-	.db $23, $F7, $01, $00
-	.db $23, $FF, $01, $00
 	.db $00
 
 ; This table defines which level starts each world.
@@ -215,7 +102,7 @@ WorldStartingLevel:
 	.db $0F
 	.db $12
 	.db $14
-
+; FREE
 PlayerSelectMarioSprites1:
 	.db $8F, $00, $00, $48
 	.db $8F, $00, $40, $50
@@ -263,7 +150,7 @@ PlayerSelectPrincessSprites2:
 	.db $8F, $2A, $03, $B0
 	.db $9F, $2C, $03, $A8
 	.db $9F, $2E, $03, $B0
-
+;;;;;
 PlayerSelectSpriteIndexes:
 	.db $00, $30, $20, $10
 
@@ -290,6 +177,7 @@ PlayerSelectSpritePalettesDark:
 	.db $0F, $22, $12, $01
 	.db $0F, $22, $12, $01
 
+; FREE
 PlayerSelectPaletteOffsets:
 	.db (PlayerSelectSpritePalettes_Mario - PlayerSelectSpritePalettes)
 	.db (PlayerSelectSpritePalettes_Princess - PlayerSelectSpritePalettes)
@@ -309,17 +197,17 @@ PlayerSelectSpritePalettes_Toad:
 PlayerSelectSpritePalettes_Princess:
 	.db $3F, $1C, $04
 	.db $0F, $36, $25, $07
-
+;;;;;
 TitleCardPalettes:
 	.db $3F, $00, $20 ; PPU data
-	.db $38, $30, $1A, $0F
+	.db $38, $30, $10, $00
 	.db $38, $38, $0F, $0F
 	.db $38, $17, $17, $38
 	.db $38, $28, $18, $08
-	.db $38, $30, $27, $01
-	.db $38, $37, $27, $06
-	.db $38, $25, $36, $06
-	.db $38, $12, $36, $01
+	.db $0F, $30, $27, $01
+	.db $0F, $37, $27, $06
+	.db $0F, $25, $36, $06
+	.db $0F, $12, $36, $01
 	.db $00
 
 BonusChanceSpritePalettes:
@@ -422,7 +310,8 @@ EnableNMI_PauseTitleCard:
 	STA ScreenUpdateIndex
 	JSR WaitForNMI
 
-	LDA #ScreenUpdateBuffer_TitleCard
+	LDA CurrentLevel
+	ADC #ScreenUpdateBuffer_RAM_Text_Starting_Index ; TEST
 	STA ScreenUpdateIndex
 
 	JMP WaitForNMI
@@ -439,20 +328,23 @@ DisplayLevelTitleCardText:
 	; Level number (unused)
 	; In Doki Doki Panic, this was displayed as a page number, keeping with
 	; the storybook motif.
-	INY
-	TYA
-	JSR GetTwoDigitNumberTiles
+	;	LDX CurrentWorld
+	;	LDY CurrentLevel
+;	INY
+;	TYA 
+;	JSR GetTwoDigitNumberTiles
 
 	; World number
 	INX
 	TXA
-	ORA #$D0
+;	ORA #$D0
+	ADC #$02
 	STA TitleCard_World
 
 	; Extra Life number
-	LDY ExtraLives
-	DEY
-	TYA
+	LDA ExtraLives
+;	DEY The game display 00 has valid extralife 01. I want to start the count at 00 not 01
+;	TYA Why this? Why not just load in the acumulator?
 	JSR GetTwoDigitNumberTiles
 	STY TitleCard_Lives
 	STA TitleCard_Lives + 1
@@ -472,7 +364,7 @@ DisplayLevelTitleCardText_ResetLevelDotsLoop:
 	SBC WorldStartingLevel, Y
 	STA CurrentLevelRelative
 	CLC
-	ADC #$D1
+	ADC #$03
 	STA TitleCard_Level
 
 	; Use the difference between the starting level of the next world and this
@@ -486,11 +378,11 @@ DisplayLevelTitleCardText_ResetLevelDotsLoop:
 	LDX #$00
 	LDY #$00
 DisplayLevelTitleCardText_DrawLevelDotsLoop:
-	LDA #$FD ; other level
+	LDA #$7E ; other level
 	CPX CurrentLevelRelative
 	BNE DisplayLevelTitleCardText_DrawLevelDot
 
-	LDA #$F6 ; current level
+	LDA #$48 ; current level
 
 DisplayLevelTitleCardText_DrawLevelDot:
 	STA TitleCard_LevelDots, Y
@@ -595,12 +487,10 @@ DisplayLevelTitleCardAndMore_TitleCardPaletteLoop:
 	JSR RestorePlayerToFullHealth
 
 	; Pause for the title card
-	LDA #$50
-	STA byte_RAM_2
 PreLevelTitleCard_PauseLoop:
 	JSR WaitForNMI
-	DEC byte_RAM_2
-	BPL PreLevelTitleCard_PauseLoop
+	LDA Player1JoypadPress
+	BEQ PreLevelTitleCard_PauseLoop
 
 PreStartLevel:
 	JSR SetStack100Gameplay
@@ -622,6 +512,24 @@ PreStartLevel:
 
 
 ;
+; Code was repeated after refacto, so made it a sub routine to save 3 instructions :)
+;
+ScreenCardResetDisplay:
+	LDA #PRGBank_A_B ; Added because bank problem...
+	JSR ChangeMappedPRGBank
+
+	JSR ResetScreenForTitleCard
+
+	JSR EnableNMI_PauseTitleCard
+
+	LDX CurrentWorld
+	LDY CurrentLevel
+	JSR DisplayLevelTitleCardText
+
+	RTS
+
+
+;
 ; Runs the Character Select menu
 ;
 DoCharacterSelectMenu:
@@ -631,217 +539,12 @@ DoCharacterSelectMenu:
 	STA PPUMASK
 	JSR DisableNMI
 
-	JSR LoadCharacterSelectCHRBanks
-
 	LDA #PRGBank_A_B
 	JSR ChangeMappedPRGBank
 
 	JSR CopyCharacterStatsAndStuff
 
-	JSR ResetScreenForTitleCard
-
-	LDA CharacterSelectBankSwitch
-	CMP #$A5
-	BEQ loc_BANKF_E2B2
-
-	LDA #PRGBank_A_B
-	JSR ChangeMappedPRGBank
-
-	LDA #$A5
-	STA CharacterSelectBankSwitch
-
-loc_BANKF_E2B2:
-	JSR EnableNMI_PauseTitleCard
-
-	JSR DisableNMI
-
-	LDA #Music1_CharacterSelect
-	STA MusicQueue1
-	LDA CurrentCharacter
-	STA PreviousCharacter
-	LDA CurrentWorld
-	STA PreviousWorld
-
-	LDY #$3F
-loc_BANKF_E2CA:
-	LDA PlayerSelectMarioSprites1, Y
-	STA SpriteDMAArea + $10, Y
-	DEY
-	BPL loc_BANKF_E2CA
-
-	JSR EnableNMI
-
-	JSR WaitForNMI
-
-	LDX CurrentWorld
-	LDY CurrentLevel
-	JSR DisplayLevelTitleCardText
-
-	JSR WaitForNMI
-
-	JMP loc_BANKF_E311
-
-; ---------------------------------------------------------------------------
-
-loc_BANKF_E2E8:
-	LDA Player1JoypadPress
-	AND #ControllerInput_Right | ControllerInput_Left
-	BNE CharacterSelect_ChangeCharacter
-
-	JMP CharacterSelectMenuLoop
-
-; ---------------------------------------------------------------------------
-
-CharacterSelect_ChangeCharacter:
-	LDA Player1JoypadPress
-	AND #ControllerInput_Right
-	BEQ loc_BANKF_E2FE
-
-	DEC CurrentCharacter
-	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
-
-loc_BANKF_E2FE:
-	LDA Player1JoypadPress
-	AND #ControllerInput_Left
-	BEQ loc_BANKF_E30B
-
-	INC CurrentCharacter
-	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
-
-loc_BANKF_E30B:
-	LDA CurrentCharacter
-	AND #$03
-	STA CurrentCharacter
-
-loc_BANKF_E311:
-	LDY #$00
-	LDA #$21
-	STA PPUBuffer_301
-	LDA #$C9
-	STA PPUBuffer_301 + 1
-	LDA #$4F
-	STA PPUBuffer_301 + 2
-	LDA #$FB
-	STA PPUBuffer_301 + 3
-	LDA #$21
-	STA PPUBuffer_301 + 4
-	LDA #$E9
-	STA PPUBuffer_301 + 5
-	LDA #$4F
-	STA PPUBuffer_301 + 6
-	LDA #$FB
-	STA PPUBuffer_301 + 7
-	LDY CurrentCharacter
-	LDA #$21
-	STA PPUBuffer_301 + 8
-	LDA PlayerSelectArrowTop, Y
-	STA PPUBuffer_301 + 9
-	LDA #$02
-	STA PPUBuffer_301 + 10
-	LDA #$BE
-	STA PPUBuffer_301 + 11
-	LDA #$C0
-	STA PPUBuffer_301 + 12
-	LDA #$21
-	STA PPUBuffer_301 + 13
-	LDA PlayerSelectArrowBottom, Y
-	STA PPUBuffer_301 + 14
-	LDA #$02
-	STA PPUBuffer_301 + 15
-	LDA #$BF
-	STA PPUBuffer_301 + 16
-	LDA #$C1
-	STA PPUBuffer_301 + 17
-	LDA #$00
-	STA PPUBuffer_301 + 18
-	JSR WaitForNMI_TurnOnPPU
-
-	LDX #$12
-	LDY #$00
-
-loc_BANKF_E37D:
-	LDA PlayerSelectSpritePalettesDark, Y
-	STA PPUBuffer_301, Y
-	INY
-	DEX
-	BPL loc_BANKF_E37D
-
-	LDA #$06
-	STA byte_RAM_A
-	LDX CurrentCharacter
-	LDA PlayerSelectPaletteOffsets, X
-	TAX
-
-loc_BANKF_E391:
-	LDA PlayerSelectSpritePalettes, X
-	STA PPUBuffer_301, Y
-	INY
-	INX
-	DEC byte_RAM_A
-	BPL loc_BANKF_E391
-
-	LDA #$00
-	STA PPUBuffer_301, Y
-
-CharacterSelectMenuLoop:
-	JSR WaitForNMI_TurnOnPPU
-
-	LDA Player1JoypadPress
-	AND #ControllerInput_A
-	BNE loc_BANKF_E3AE
-
-	JMP loc_BANKF_E2E8
-
-; ---------------------------------------------------------------------------
-
-loc_BANKF_E3AE:
-	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
-	LDX CurrentWorld
-	LDY CurrentLevel
-	JSR DisplayLevelTitleCardText
-
-	LDA #$40
-	STA byte_RAM_10
-	JSR WaitForNMI
-
-	LDX #$F
-	LDA CurrentCharacter
-	TAY
-	LDA PlayerSelectSpriteIndexes, Y
-	TAY
-
-loc_BANKF_E3CC:
-	LDA PlayerSelectMarioSprites2, Y
-	STA SpriteDMAArea + $10, Y
-	INY
-	DEX
-	BPL loc_BANKF_E3CC
-
-loc_BANKF_E3D6:
-	JSR WaitForNMI
-
-	DEC byte_RAM_10
-	BPL loc_BANKF_E3D6
-
-	LDY #$3F
-
-loc_BANKF_E3DF:
-	LDA PlayerSelectMarioSprites1, Y
-	STA SpriteDMAArea + $10, Y
-	DEY
-	BPL loc_BANKF_E3DF
-
-	LDA #$40
-	STA byte_RAM_10
-
-loc_BANKF_E3EC:
-	JSR WaitForNMI
-
-	DEC byte_RAM_10
-	BPL loc_BANKF_E3EC
+	JSR ScreenCardResetDisplay
 
 	LDA #Music2_StopMusic
 	STA MusicQueue2
@@ -1329,10 +1032,10 @@ ShowCardAfterTransition:
 	LDA #$FF
 	STA CurrentMusicIndex
 	; Draw EXTRA LIFE text near top of card
-	LDA #$25
-	STA TitleCard_ExtraLife_DrawAddress
-	LDA #$48
-	STA TitleCard_ExtraLife_DrawAddress + 1
+;	LDA #$27 ; FUCK OFF LMAO, been trying to fix this bug for hour
+;	STA TitleCard_ExtraLife_DrawAddress
+;	LDA #$48
+;	STA TitleCard_ExtraLife_DrawAddress + 1
 	LDA #ScreenUpdateBuffer_TitleCardLeftover
 	STA CardScreenUpdateIndex
 	JSR PauseScreen_Card
@@ -1933,9 +1636,9 @@ BonusChanceUpdateBuffer_PLAYER_1UP:
 ;
 ; Displays extra life info on the pause screen
 ;
-PauseScreen_ExtraLife:
-	LDA #ScreenUpdateBuffer_PauseExtraLife
-	STA CardScreenUpdateIndex
+PauseScreen_ExtraLife: ; Pause nametable...
+;	LDA #ScreenUpdateBuffer_PauseExtraLife
+;	STA CardScreenUpdateIndex
 	; Draw EXTRA LIFE text near bottom of card
 	LDA #$26
 	STA TitleCard_ExtraLife_DrawAddress
@@ -1964,13 +1667,7 @@ PauseScreen_Card_Loop:
 	BPL PauseScreen_Card_Loop
 
 PauseScreen_Card_ScreenReset:
-	JSR ResetScreenForTitleCard
-
-	JSR EnableNMI_PauseTitleCard
-
-	LDX CurrentWorld
-	LDY CurrentLevel
-	JSR DisplayLevelTitleCardText
+	JSR ScreenCardResetDisplay
 
 	LDA #$FF
 	STA PPUScrollXMirror
@@ -2058,24 +1755,26 @@ sub_BANKF_EA68:
 ; - `A`: second digit of the number (ones)
 ; - `Y`: first digit of the number (tens)
 ;
+; Converted to hexadecimal! Can't be asked having to deal with more than 2 digits
 GetTwoDigitNumberTiles:
-	LDY #$D0 ; zero
+	LDY #$02 ; zero
 
 GetTwoDigitNumberTiles_TensLoop:
 	; Count up the tens digit until A < 10
-	CMP #$0A
+	CMP #$10
 	BCC GetTwoDigitNumberTiles_Ones
 
-	SBC #$0A
+	SBC #$10
 	INY
 	JMP GetTwoDigitNumberTiles_TensLoop
 
 GetTwoDigitNumberTiles_Ones:
-	ORA #$D0
-	CPY #$D0
-	BNE GetTwoDigitNumberTiles_Exit
+;	ORA #$D0
+;	CPY #$D0
+;	BNE GetTwoDigitNumberTiles_Exit
 
-	LDY #$FB
+;	LDY #$FB
+	ADC #$02
 
 GetTwoDigitNumberTiles_Exit:
 	RTS
@@ -2874,6 +2573,30 @@ SlotMachineNoCoinsJingle:
 	STA MusicQueue2
 	RTS
 ENDIF
+
+; Write to the PPU to update the color palette at location $3F11-$3f13
+; Changed to e-f so it can be used everywhere, take 45 bytes of the permanent bank
+UpdateCharacterPalette:
+	LDX byte_RAM_300
+	LDA #$3F
+	STA PPUBuffer_301, X
+	LDA #$11
+	STA PPUBuffer_301 + 1, X
+	LDA #$03
+	STA PPUBuffer_301 + 2, X
+	LDA RestorePlayerPalette1
+	STA PPUBuffer_301 + 3, X
+	LDA RestorePlayerPalette2
+	STA PPUBuffer_301 + 4, X
+	LDA RestorePlayerPalette3
+	STA PPUBuffer_301 + 5, X
+	LDA #$00
+	STA PPUBuffer_301 + 6, X
+	TXA
+	CLC
+	ADC #$06
+	STA byte_RAM_300
+	RTS
 
 ; Unused space in the original ($ED4D - $EFFF)
 unusedSpace $F000, $FF
@@ -5853,30 +5576,26 @@ LoadCelebrationSceneBackgroundCHR:
 	STA BackgroundCHR2
 	RTS
 
-
-LoadCharacterSelectCHRBanks:
-	LDA #CHRBank_CharacterSelectSprites
-	STA SpriteCHR1
-	LDA #CHRBank_CharacterSelectBG1
-	STA BackgroundCHR1
-	LDA #CHRBank_CharacterSelectBG2
-	STA BackgroundCHR2
-	RTS
-
-
-TitleCardCHRBanks:
-	.db CHRBank_TitleCardGrass
-	.db CHRBank_TitleCardDesert
-	.db CHRBank_TitleCardGrass
-	.db CHRBank_TitleCardIce
-	.db CHRBank_TitleCardGrass
-	.db CHRBank_TitleCardDesert
-	.db CHRBank_TitleCardSky
-
-
+;
+; Hotswap to the correct bank for special drawing. Range is 0-6, 7-D, F-End
+;
 ChangeTitleCardCHR:
-	LDY CurrentWorld
-	LDA TitleCardCHRBanks, Y
+	LDA #CHRBank_Font
+	STA BackgroundCHR1
+	LDY CurrentLevel
+	INY ; Increase because CPM become an issue if level is 00
+	CPY #$08 ; Branch if X register is greater than 08 "0-7"
+	BCS CheckSecondBankTitleCardCHR	
+	LDA #CHRBank_TitleCardDesert
+	BCC RetChangeTitleCardCHR
+CheckSecondBankTitleCardCHR:
+	CPY #$0F ; Brance if Y register is greater than 15
+	BCS ItsThirdBankTitleCardChr
+	LDA #CHRBank_TitleCardIce
+	BCC RetChangeTitleCardCHR
+ItsThirdBankTitleCardChr:
+	LDA #CHRBank_TitleCardSky
+RetChangeTitleCardCHR:
 	STA BackgroundCHR2
 	RTS
 
@@ -5906,7 +5625,7 @@ PauseRespawn:
 	; Check conditions where we shouldn't allow respawn
 	LDA PlayerLock
 	BNE PauseRespawn_Exit
-	; BNE PauseRespawn_ShowPauseScreen
+	; BNE PauseRespawn_ShowPauseScreen BUG BUG?
 
 PauseRespawn_KillPlayer:
 	JSR KillPlayer

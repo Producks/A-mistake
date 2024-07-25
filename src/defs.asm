@@ -186,6 +186,7 @@ ScreenUpdateBuffer_RAM_EndOfLevelDoor = $14
 ScreenUpdateBuffer_TitleCardLeftover = $15
 ScreenUpdateBuffer_PauseExtraLife = $16
 ScreenUpdateBuffer_RAM_BonusChanceLayout = $17
+ScreenUpdateBuffer_RAM_Text_Starting_Index = $18
 
 ; ---------------------------------------------------------------------------
 
@@ -827,7 +828,7 @@ CHRBank_ChanceBG2 = $36
 CHRBank_CelebrationBG1 = $38
 CHRBank_CelebrationBG2 = $3A
 
-CHRBank_TitleCardGrass = $40
+CHRBank_Font = $40
 CHRBank_TitleCardDesert = $42
 CHRBank_TitleCardIce = $44
 CHRBank_TitleCardSky = $46
