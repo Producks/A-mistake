@@ -1764,7 +1764,7 @@ CharacterLevelsCompleted:
 	.dsb 1 ; $0630
 MaxLevelsCompleted:
 	.dsb 1 ; $0631
-; FOR RENT
+BirdoFirstSpit:
 	.dsb 1 ; $0632
 ; FOR RENT
 LevelObjectMode:
