@@ -5264,13 +5264,15 @@ loc_BANK2_9914:
 
 loc_BANK2_9919:
 	LDA byte_RAM_10
-	AND #$07
-	BNE loc_BANK2_9921
-
-	INC ObjectYVelocity, X
+;	AND #$07
+;	BNE loc_BANK2_9921
+	STA ObjectYVelocity, X
+	STA ObjectXVelocity, X
+;	INC ObjectXVelocity, X
 
 loc_BANK2_9921:
 	JSR ApplyObjectPhysicsY
+	JSR ApplyObjectPhysicsX
 
 	LDA ObjectYLo, X
 	CMP #$F0
