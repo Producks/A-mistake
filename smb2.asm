@@ -26,6 +26,11 @@ IFDEF SM_USA
 ELSE
 	NAMETABLE_MIRRORING = %0000
 ENDIF
+IFDEF BATTERY_SAVE
+	SAVE_BATTERY = 2
+ELSE
+	SAVE_BATTERY = 0
+ENDIF
 .endinl
 
 ; -----------------------------------------
@@ -44,7 +49,7 @@ ELSE
 	.db 16 ; number of 8KB CHR-ROM pages
 ENDIF
 
-.db ((INES_MAPPER & %00001111) << 4) | MIRROR_4SCREEN | NAMETABLE_MIRRORING ; mapper (lower nybble) and mirroring
+.db ((INES_MAPPER & %00001111) << 4) | MIRROR_4SCREEN | NAMETABLE_MIRRORING | SAVE_BATTERY ; mapper (lower nybble) and mirroring
 IF INES_MAPPER == MAPPER_FME7
 	.db (INES_MAPPER & %11110000) | %1000 ; mapper (upper nybble) and iNES 2.0
 	.dsb 2, $00

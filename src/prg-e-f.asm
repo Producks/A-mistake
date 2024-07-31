@@ -577,10 +577,19 @@ ContinueGame:
 	STA ExtraLives
 
 GoToWorldStartingLevel:
+IFDEF BATTERY_SAVE
+;	LDX CurrentWorld
+;	LDY WorldStartingLevel, X
+;	STY CurrentLevel
+;	STY CurrentLevel_Init
+	LDA CurrentLevel
+	STA CurrentLevel_Init
+ELSE
 	LDX CurrentWorld
 	LDY WorldStartingLevel, X
 	STY CurrentLevel
 	STY CurrentLevel_Init
+ENDIF
 
 LevelStartCharacterSelectMenu:
 	JSR DoCharacterSelectMenu
@@ -1310,6 +1319,7 @@ GoToNextLevel:
 	LDA #$FF
 	STA CurrentMusicIndex
 	INC CurrentWorld
+	INC CurrentLevel
 	JMP GoToWorldStartingLevel
 
 GoToNextLevel_SameWorld:
