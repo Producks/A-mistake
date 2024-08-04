@@ -86,6 +86,7 @@ TitleScreenStoryTextIndex:
 	.dsb 1 ; 3                ; $0018
 MarioSnoringCounter5:
 TitleScreenStoryDone: ; RAM $0002 check will restart title screen when set
+CursorLocation:
 	.dsb 1 ; 4                ; $0019
 MarioSnoringCounter6:
 TitleScreenStoryTextLineTimer: ; used to pause between writing lines of text
