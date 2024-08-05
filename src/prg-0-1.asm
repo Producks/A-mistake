@@ -4918,14 +4918,14 @@ ENDIF
 
 TitleScreenPPUDataPointers:
 	.dw PPUBuffer_301
-	.dw TitleLayout
 	.dw DrawCursorLocationOne
 	.dw DrawCursorLocationTwo
-	.dw DrawCurSorLocationThree
-	.dw DrawCurSorLocationFour
+	.dw DrawCursorLocationThree
+	.dw DrawCursorLocationFour
+	.dw DrawCursorLocationFive
+	.dw TitleLayout
 	.dw DrawDeleteSaveFile
 	.dw DrawConfirmation
-
 
 WaitForNMI_TitleScreen_TurnOnPPU:
 	LDA #PPUMask_ShowLeft8Pixels_BG | PPUMask_ShowLeft8Pixels_SPR | PPUMask_ShowBackground | PPUMask_ShowSprites
@@ -4989,52 +4989,67 @@ IFNDEF SM_USA
 	.db $22, $6E, $04, $FC, $FC, $FC, $20
 	.db $22, $8E, $04, $76, $76, $76, $21
 
-	;					Start  game
-	;
-	;
-	.db $22, $EB, $0A, $EC, $ED, $DA, $EB, $ED, $FB, $E0, $DA, $E6, $DE
-
-
-	;
-	;		Delete save file
-	;
-DrawDeleteSaveFile:
-	.db $23, $28, $10, $DD, $DE, $E5, $DE, $ED, $DE, $FB, $EC, $DA, $EF, $DE, $FB, $DF, $E2, $E5, $DE	
+;
+; Start  game
+;
+.db $22, $AB, $0A, $EC, $ED, $DA, $EB, $ED, $FB, $E0, $DA, $E6, $DE
 
 ; attribute table?
-	.db $23, $CA, $04, $80, $A0, $A0, $20
-	.db $23, $D1, $0E, $80, $A8, $AA, $AA, $A2, $22, $00, $00, $88, $AA, $AA, $AA, $AA, $22
-	.db $23, $E3, $02, $88, $22
-	.db $23, $EA, $04, $F0, $F8, $F2, $F0
+.db $23, $CA, $04, $80, $A0, $A0, $20
+.db $23, $D1, $0E, $80, $A8, $AA, $AA, $A2, $22, $00, $00, $88, $AA, $AA, $AA, $AA, $22
+.db $23, $E3, $02, $88, $22
+.db $23, $EA, $04, $F0, $F8, $F2, $F0
+
+;
+; Draw Level Select
+;
+.db $22, $E8, $10, $E5, $DE, $EF, $DE, $E5, $FB, $EC, $DE, $E5, $DE, $DC, $ED, $FB, $D1, $F4, $D1
+
+;
+; Delete save file
+;
+DrawDeleteSaveFile:
+	.db $23, $28, $14, $DD, $DE, $E5, $DE, $ED, $DE, $FB, $EC, $DA, $EF, $DE, $FB, $DF, $E2, $E5, $DE, $FB, $FB, $FB, $FB
 
 DrawCursorLocationOne:
-	.db $22, $E9, $01, $F5
+	.db $22, $A9, $01, $F6
+	.db $22, $B6, $01, $F6
 ; Clear draw cursor Two
 	.db $23, $26, $01, $FB
+	.db $23, $39, $01, $FB
 	.db $00
 
 DrawCursorLocationTwo:
-	.db $22, $E9, $01, $FB
+	.db $22, $E6, $01, $F6
+	.db $22, $F9, $01, $F6
 ; Clear draw cursor one
-	.db $23, $26, $01, $F5
+	.db $22, $A9, $01, $FB
+	.db $22, $B6, $01, $FB
 	.db $00
 
-DrawCurSorLocationThree:
-	.db $23, $26, $01, $F5
+DrawCursorLocationThree:
+	.db $23, $26, $01, $F6
+	.db $23, $39, $01, $F6
+; Clear draw cursor one
+	.db $22, $E6, $01, $FB
+	.db $22, $F9, $01, $FB
+	.db $00
+
+DrawCursorLocationFour:
+	.db $23, $26, $01, $F6
+	.db $23, $30, $01, $F6
+; Clear draw cursor Five
+	.db $23, $3B, $01, $FB
+	.db $00
+
+DrawCursorLocationFive:
+	.db $23, $3B, $01, $F6
 ; Clear draw cursor four
-	.db $23, $30, $01, $FB
-	.db $00
-
-DrawCurSorLocationFour:
 	.db $23, $26, $01, $FB
-; Clear draw cursor four
-	.db $23, $30, $01, $F5
 	.db $00
-
-; Press A to Confirm
 
 DrawConfirmation:
-	.db $23, $28, $13, $DD, $DE, $DC, $E5, $E2, $E7, $DE, $FB, $FB, $FB, $DC, $E8, $E7, $DF, $E2, $EB, $E6, $F5, $FB  ; Decline Accept!
+	.db $23, $28, $13, $DD, $DE, $DC, $E5, $E2, $E7, $DE, $FB, $F6, $FB, $DC, $E8, $E7, $DF, $E2, $EB, $E6, $F5, $FB  ; Decline Accept!
 	.db $00
 
 ELSE
@@ -5154,15 +5169,14 @@ InitTitleBackgroundPalettesLoop:
 	; Draw the title screen (ScreenUpdateIndex is using TitleScreenPPUDataPointers)
 	LDA #DrawTitleLayout ; TitleLayout
 	STA ScreenUpdateIndex
-;	JSR WaitForNMI_TitleScreen
+;	JSR WaitForNMI_TitleScreen ; Check later if this create a conflict
 
-	; Cue the music!
-;	LDA #Music1_Title
-;	STA MusicQueue1
 	JSR WaitForNMI_TitleScreen_TurnOnPPU
+	LDA #DrawCursorOne
+	STA CursorLocation ; Setup the cursor to the default position
 
 
-; Enter the input loop!
+;- Title screen related functions, loop, input reading, sound effect, exiting -;
 TitleScreenInputReading:
 	LDA Player1JoypadPress
 	AND #ControllerInput_Start | ControllerInput_Select
@@ -5172,40 +5186,61 @@ CheckStartInputTitleScreen:
 	CMP #ControllerInput_Start
 	BEQ HandleStartInputTitleScreen
 
-; Move cursor
+; Move the cursor
 HandleSelectInputSelect:
+	INC CursorLocation
 	LDA CursorLocation
-	EOR #$01
-	STA CursorLocation ; Flip last bit
-	CLC
-	ADC #$02
-	STA ScreenUpdateIndex
-	STA SoundEffectQueue1
-	JSR WaitForNMI_TitleScreen
+	CMP #$04
+	BNE UpdateCursorFirstScreen
+	LDA #$01
+	STA CursorLocation
+
+UpdateCursorFirstScreen:
+	JSR UpdateCursorAndIndex
 	JMP TitleScreenInputReading ; optimize later
 
+; Check 2 & 3, if not fall through to leaving the title screen
 HandleStartInputTitleScreen:
 	LDA CursorLocation
-	BNE AskForConfirmationDeleteSaveFile
+	CMP #DrawCursorTwo
+	BEQ LevelSelectTitleScreen
+	CMP #DrawCursorThree
+	BEQ ConfirmationRendering
 
 QuitTitleScreen:
-	LDA #Music2_StopMusic
-	STA MusicQueue2
-	JSR WaitForNMI_TitleScreen
+	LDA #SoundEffect1_1UP
+	STA SoundEffectQueue1
+	LDA #$D0
+	JSR WaitTitleScreenTimer
 
 	LDA #$00
 	TAY
 
-loc_BANK0_9C2A:
+loc_BANK0_9C2A: ; 0 out something?
 	STA byte_RAM_0, Y
 	INY
 	CPY #$F0
 	BCC loc_BANK0_9C2A
 
 	JMP HideAllSprites
+;- End of title screen -;
 
-; Ask for confirmation before deleting the save file
-AskForConfirmationDeleteSaveFile:
+;- Level Select -;
+LevelSelectTitleScreen:
+	JMP TitleScreenInputReading ; place holder
+;- End level select title screen -;
+
+;- Confirmation related functions, sound effect, rendering, input reading, save wiping -;
+ConfirmationRendering:
+SetSoundEffectConfirmationRendering:
+	LDA #SoundEffect1_ThrowItem
+	STA SoundEffectQueue1
+
+InitializeCursorForConfirmation: ; Could probably just INC, but scared to do so incase of a bug.
+	LDA #DrawCursorFour
+	STA CursorLocation
+
+DrawConfirmationTextForDeletefile:
 	LDA #DrawConfirmationText
 	STA ScreenUpdateIndex
 	JSR WaitForNMI_TitleScreen
@@ -5217,12 +5252,13 @@ WaitForConfirmationInput:
 	BEQ WaitForConfirmationInput
 
 CheckConfirmationSelect:
-	CMP #ControllerInput_Start
+	CMP #ControllerInput_Select
 	BEQ MoveCursorConfirmation 
 
 HandleStartConfirmation:
 	LDA CursorLocation
-	BNE CleanupConfirmation ; Branch if cursor is on decline 1, delete if cursor at 0
+	CMP #DrawCursorFour
+	BEQ PlaySoundEffectDecline ; Branch if cursor is on decline 3, delete if cursor at 4
 
 ; 0 out the save file
 DeleteSaveFile:
@@ -5232,17 +5268,52 @@ OverWriteSaveFile:
 	STA $7FF0, Y
 	DEY
 	BPL OverWriteSaveFile
-	BMI TitleScreenInputReading
+
+PlayDeleteSaveFileSoundEffect:
+	LDA #SoundEffect2_Shrinking
+	STA SoundEffectQueue2
 
 CleanupConfirmation:
-	JMP TitleScreenInputReading
+	LDA #DrawDeleteSaveFileText
+	STA ScreenUpdateIndex
+	LDA #DrawCursorOne
+	STA CursorLocation
+	JSR WaitForNMI_TitleScreen
+	JMP TitleScreenInputReading ; optimize later
 
 MoveCursorConfirmation:
 	LDA CursorLocation
+	EOR #$01 ; Xor 07 to flip the last 3 bits
+	JSR UpdateCursorAndIndex
 	JMP WaitForConfirmationInput
 
+PlaySoundEffectDecline:
+	LDA #SoundEffect2_Climbing
+	STA SoundEffectQueue2
+	BNE CleanupConfirmation
 
-; End of function TitleScreen
+;- End of functions confirmation -;
+
+;- Random utilities subroutine for the title screen -;
+;- Save 3-5 instructions at the cost of JSR + RTS, but not much is happening in here anyway... -;
+UpdateCursorAndIndex:
+	STA CursorLocation
+	STA ScreenUpdateIndex
+	LDA #SoundEffect1_CherryGet
+	STA SoundEffectQueue1
+	JSR WaitForNMI_TitleScreen
+	RTS
+
+; Utulity timer for the title screen, wait an amount of frame until it overflow
+WaitTitleScreenTimer:
+	STA TimerTitleScreen
+LoopTitleScreenTimer:
+	JSR WaitForNMI
+	INC TimerTitleScreen
+	BNE LoopTitleScreenTimer
+	RTS
+
+;- End of subroutine for the TitleScreen -;
 
 
 IFDEF RESPAWN_INSTEAD_OF_DEATH
@@ -5353,7 +5424,6 @@ ENDIF
 
 ; Unused space in the original ($9C58 - $A1FF)
 unusedSpace $A200, $FF
-
 
 EndingPPUDataPointers:
 	.dw PPUBuffer_301

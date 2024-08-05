@@ -835,6 +835,7 @@ PreviousCharacter:
 PreviousWorld:
 	.dsb 1 ; $0405
 ; FOR RENT
+TimerTitleScreen:
 TempRamValue:
 	.dsb 1 ; $0406
 

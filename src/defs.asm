@@ -162,13 +162,14 @@ PRGBank_E_F = $07
 ; ---------------------------------------------------------------------------
 
 ; enum title screen
-DrawTitleLayout = $01
-DrawCursorOne = $02
-DrawCursorTwo = $03
-DrawCursorThree = $04
-DrawCursorFour = $05
-DrawDeleteSaveFileText = $06
-DrawConfirmationText = $07
+DrawCursorOne = $01
+DrawCursorTwo = $02
+DrawCursorThree = $03
+DrawCursorFour = $04
+DrawCursorFive = $05
+DrawTitleLayout = $06
+DrawDeleteSaveFileText = $07
+DrawConfirmationText = $08
 
 ; ---------------------------------------------------------------------------
 
