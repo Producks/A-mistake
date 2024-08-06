@@ -80,15 +80,17 @@ TitleScreenPPULength:
 	.dsb 1 ; 1                ; $0016
 MarioSnoringWaveFrame:
 TitleScreenStoryNeedsClear: ; set when the text area needs to be cleared for the story
+CurrentLevelTitleScreenDisplay:
 	.dsb 1 ; 2                ; $0017
 MarioSnoringWaveFrameCounter: ; controls waving speed
 TitleScreenStoryTextIndex:
+CurrentLevelWorldScreenDisplay:
 	.dsb 1 ; 3                ; $0018
 MarioSnoringCounter5:
 TitleScreenStoryDone: ; RAM $0002 check will restart title screen when set
 CursorLocation:
 	.dsb 1 ; 4                ; $0019
-MarioSnoringCounter6:
+MarioSnoringCounter6:	
 TitleScreenStoryTextLineTimer: ; used to pause between writing lines of text
 	.dsb 1 ; 5                ; $001a
 MarioSnoringCounter7:

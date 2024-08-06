@@ -5169,22 +5169,52 @@ InitTitleBackgroundPalettesLoop:
 	; Draw the title screen (ScreenUpdateIndex is using TitleScreenPPUDataPointers)
 	LDA #DrawTitleLayout ; TitleLayout
 	STA ScreenUpdateIndex
-;	JSR WaitForNMI_TitleScreen ; Check later if this create a conflict
+	JSR WaitForNMI_TitleScreen ; Check later if this create a conflict
 
 	JSR WaitForNMI_TitleScreen_TurnOnPPU
 	LDA #DrawCursorOne
 	STA CursorLocation ; Setup the cursor to the default position
 
+	LDA #Music1_Invincible
+	STA MusicQueue1
+
 
 ;- Title screen related functions, loop, input reading, sound effect, exiting -;
 TitleScreenInputReading:
 	LDA Player1JoypadPress
-	AND #ControllerInput_Start | ControllerInput_Select
-	BEQ TitleScreenInputReading
-
-CheckStartInputTitleScreen:
+	BEQ WaitForNmiTitleScreen ; If nothing is being press, go wait right away
+	CMP #ControllerInput_Select
+	BEQ HandleSelectInputSelect
 	CMP #ControllerInput_Start
 	BEQ HandleStartInputTitleScreen
+	CMP #ControllerInput_Left
+	BEQ HandleLeftMainMenu
+	CMP #ControllerInput_Right
+	BEQ HandleRightMainMenu
+;	BNE TitleScreenInputReading
+
+WaitForNmiTitleScreen:
+	LDA #$00 ; MASSIVE BUG HERE, if something break again please look here i'm an idiot...
+	STA NMIWaitFlag
+	JSR WaitForNMILoop
+	JMP TitleScreenInputReading
+
+; Handle input for left and right
+HandleRightMainMenu:
+HandleLeftMainMenu:
+	LDA CursorLocation
+	CMP #DrawCursorTwo
+	BNE TitleScreenInputReading ; Go back to reading inputs if the cursor isn't on the level select position
+;	CMP #ControllerInput_Left
+;	BNE
+	LDA #DPCM_DoorOpenBombBom
+	STA DPCMQueue
+	JMP TitleScreenInputReading
+
+; Handle input for start and select on the main menu
+;CheckStartInputTitleScreen:
+;	CMP #ControllerInput_Start
+;	BEQ HandleStartInputTitleScreen
 
 ; Move the cursor
 HandleSelectInputSelect:
@@ -5222,11 +5252,19 @@ loc_BANK0_9C2A: ; 0 out something?
 	CPY #$F0
 	BCC loc_BANK0_9C2A
 
+LDA #Music2_StopMusic
+	STA MusicQueue2
 	JMP HideAllSprites
 ;- End of title screen -;
 
 ;- Level Select -;
 LevelSelectTitleScreen:
+	JSR DisableNMI
+	JSR SetWorldNumberTitleScreen
+	LDA #$00
+	STA ScreenUpdateIndex
+	JSR EnableNMI
+;	JSR WaitForNMI_TurnOnPPU
 	JMP TitleScreenInputReading ; place holder
 ;- End level select title screen -;
 
@@ -5311,6 +5349,48 @@ LoopTitleScreenTimer:
 	JSR WaitForNMI
 	INC TimerTitleScreen
 	BNE LoopTitleScreenTimer
+	RTS
+
+; Display numbarssss
+; Set the world number
+SetWorldNumberTitleScreen:
+	LDA CurrentWorld
+	TAY
+	CLC
+	ADC #$D1
+	STA CurrentLevelWorldScreenDisplay
+
+; Set the level number
+SetCurrentLevelTitleScreen:
+	LDA CurrentLevel
+	SEC
+	SBC WorldStartingLevel, Y
+	CLC
+	ADC #$D1
+	STA CurrentLevelTitleScreenDisplay
+
+; Write to the PPU to update the color palette at location $3F11-$3f13
+; Changed to e-f so it can be used everywhere, take 45 bytes of the permanent bank
+UpdateLevelSelectNumbers:
+	LDX byte_RAM_300
+	LDA #$22
+	STA PPUBuffer_301, X
+	LDA #$F5
+	STA PPUBuffer_301 + 1, X
+	LDA #$03
+	STA PPUBuffer_301 + 2, X
+	LDA CurrentLevelWorldScreenDisplay
+	STA PPUBuffer_301 + 3, X
+	LDA #$F4
+	STA PPUBuffer_301 + 4, X
+	LDA CurrentLevelTitleScreenDisplay
+	STA PPUBuffer_301 + 5, X
+	LDA #$00
+	STA PPUBuffer_301 + 6, X
+	TXA
+	CLC
+	ADC #$06
+	STA byte_RAM_300
 	RTS
 
 ;- End of subroutine for the TitleScreen -;
