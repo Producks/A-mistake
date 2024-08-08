@@ -1192,6 +1192,7 @@ DoWorldWarp:
 	LDA WorldStartingLevel, Y
 	STA CurrentLevel
 	STA CurrentLevel_Init
+	JSR CheckIfNewHighestLevel
 
 	; Set world number
 	INY
@@ -1320,11 +1321,20 @@ GoToNextLevel:
 	STA CurrentMusicIndex
 	INC CurrentWorld
 	INC CurrentLevel
+	JSR CheckIfNewHighestLevel
 	JMP GoToWorldStartingLevel
+
+CheckIfNewHighestLevel:
+	LDA CurrentLevel
+	CMP #HighestLevel
+	BCC LeaveCheckIfNewHighestLevel
+	STA HighestLevel
+LeaveCheckIfNewHighestLevel
+	RTS
 
 GoToNextLevel_SameWorld:
 	JSR FollowCurrentAreaPointer
-
+	JSR CheckIfNewHighestLevel
 	; Sanity check that ensure that the world matches the level.
 	; Without this, an area pointer at the end of a level that points to a
 	; a different world would load incorrectly (eg. 2-1 would load as 1-4).

@@ -92,6 +92,7 @@ CursorLocation:
 	.dsb 1 ; 4                ; $0019
 MarioSnoringCounter6:	
 TitleScreenStoryTextLineTimer: ; used to pause between writing lines of text
+CheatCodeCounter:
 	.dsb 1 ; 5                ; $001a
 MarioSnoringCounter7:
 	.dsb 1 ; 6                ; $001b
@@ -2255,6 +2256,7 @@ IFDEF BATTERY_SAVE
 	CurrentWorldTileset = $7FF0
 
 	ExtraLives = $7FF2
+	HighestLevel = $7FF3
 ;
 	CurrentLevel = $7FF8
 	CurrentLevelArea = $7FF9
