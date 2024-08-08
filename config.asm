@@ -196,5 +196,7 @@ ENDIF
 ; Use RAM address for player hitbox offset rather than PlayerDucking
 ; PLAYER_HITBOX = 1
 
+; Enable the ability to save the game with the battery
+ BATTERY_SAVE = 1
 
 .endinl

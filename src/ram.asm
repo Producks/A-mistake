@@ -80,15 +80,19 @@ TitleScreenPPULength:
 	.dsb 1 ; 1                ; $0016
 MarioSnoringWaveFrame:
 TitleScreenStoryNeedsClear: ; set when the text area needs to be cleared for the story
+CurrentLevelTitleScreenDisplay:
 	.dsb 1 ; 2                ; $0017
 MarioSnoringWaveFrameCounter: ; controls waving speed
 TitleScreenStoryTextIndex:
+CurrentLevelWorldScreenDisplay:
 	.dsb 1 ; 3                ; $0018
 MarioSnoringCounter5:
 TitleScreenStoryDone: ; RAM $0002 check will restart title screen when set
+CursorLocation:
 	.dsb 1 ; 4                ; $0019
-MarioSnoringCounter6:
+MarioSnoringCounter6:	
 TitleScreenStoryTextLineTimer: ; used to pause between writing lines of text
+CheatCodeCounter:
 	.dsb 1 ; 5                ; $001a
 MarioSnoringCounter7:
 	.dsb 1 ; 6                ; $001b
@@ -834,6 +838,7 @@ PreviousCharacter:
 PreviousWorld:
 	.dsb 1 ; $0405
 ; FOR RENT
+TimerTitleScreen:
 TempRamValue:
 	.dsb 1 ; $0406
 
@@ -1197,8 +1202,16 @@ byte_RAM_4EB:
 ; $04+: Warp
 GameMode:
 	.dsb 1 ; $04ec
+
+; Place holder for now
+IFDEF BATTERY_SAVE
+; FOR RENT
+	.dsb 1 ; $04ed
+ELSE
 ExtraLives:
 	.dsb 1 ; $04ed
+ENDIF
+
 ; $00: None
 ; $01: Default jar
 ; $02: Pointer jar
@@ -1310,11 +1323,22 @@ AreaPointersByPage:
 	.dsb 1 ; $052e
 	.dsb 1 ; $052f
 	.dsb 1 ; $0530
+
+IFDEF BATTERY_SAVE
+	; FOR RENT
+	.dsb 1 ; $0531
+	.dsb 1 ; $0532
+	.dsb 1 ; $0533
+	.dsb 1 ; $0534
+	.dsb 1 ; $0535
+	.dsb 1 ; $0536
+ELSE
+
 CurrentLevel:
 	.dsb 1 ; $0531
 CurrentLevelArea:
 	.dsb 1 ; $0532
-CurrentLevelEntryPage:
+CurrentLevelEntryPage:	
 	.dsb 1 ; $0533
 TransitionType:
 	.dsb 1 ; $0534
@@ -1327,6 +1351,8 @@ CurrentLevelPage:
 	.dsb 1 ; $0535
 CurrentLevelPageX:
 	.dsb 1 ; $0536
+ENDIF
+
 ; Flag to break out of the area's initial PPU draw loop?
 byte_RAM_537:
 	.dsb 1 ; $0537
@@ -1773,9 +1799,16 @@ LevelObjectMode:
 IFNDEF AREA_HEADER_TILESET
 ; FOR RENT
 	.dsb 1 ; $0634
-CurrentWorld:
-CurrentWorldTileset:
-	.dsb 1 ; $0635
+
+	; Place holder for now
+	IFDEF BATTERY_SAVE
+	; FOR RENT
+		.dsb 1 ; $0635
+	ELSE
+		CurrentWorld:
+		CurrentWorldTileset:
+		.dsb 1 ; $0635
+	ENDIF
 
 ELSE
 CurrentWorldTileset:
@@ -2214,6 +2247,25 @@ CarryYOffsetsRAM = $7e00 ; Ram adress to copy character item Y offset, where it 
 StatOffsetsRAM = $7e10 ; Ram adress where to copy character swap for hot swapping
 
 ItemCarryYOffsetsRAM = $7f00
+
+;
+; Values for the battery save feature
+;
+IFDEF BATTERY_SAVE
+	CurrentWorld = $7FF0
+	CurrentWorldTileset = $7FF0
+
+	ExtraLives = $7FF2
+	HighestLevel = $7FF3
+;
+	CurrentLevel = $7FF8
+	CurrentLevelArea = $7FF9
+	CurrentLevelEntryPage = $7FFA
+	TransitionType = $7FFB
+	CurrentLevelPage = $7FFC
+	CurrentLevelPageX = $7FFD
+
+ENDIF
 
 MMC3_BankSelect = $8000
 MMC3_BankData = $8001

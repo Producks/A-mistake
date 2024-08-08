@@ -161,6 +161,19 @@ PRGBank_E_F = $07
 
 ; ---------------------------------------------------------------------------
 
+; enum title screen
+DrawCursorOne = $01
+DrawCursorTwo = $02
+DrawCursorThree = $03
+DrawCursorFour = $04
+DrawCursorFive = $05
+DrawTitleLayout = $06
+DrawDeleteSaveFileText = $07
+DrawConfirmationText = $08
+
+; ---------------------------------------------------------------------------
+
+
 ; enum ScreenUpdateBuffer
 ScreenUpdateBuffer_RAM_301 = $00
 ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife = $01
