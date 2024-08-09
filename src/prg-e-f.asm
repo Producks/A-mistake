@@ -573,8 +573,8 @@ SetNumContinues:
 
 ; We return here after picking "CONTINUE" from the game over menu.
 ContinueGame:
-	LDA #$03 ; Number of lives to start
-	STA ExtraLives
+;	LDA #$03 ; Number of lives to start
+;	STA ExtraLives
 
 GoToWorldStartingLevel:
 IFDEF BATTERY_SAVE

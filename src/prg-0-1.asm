@@ -2019,10 +2019,11 @@ LoseALife:
 	LDA #02
 	STA PlayerAnimationFrame
 	LDY #$01 ; Set game mode to title card
-	DEC ExtraLives
+	INC ExtraLives
 	BNE SetGameModeAfterDeath
+	DEC ExtraLives ; Check for overflow, death count cap at FF
 
-	INY ; If no lives, increase game mode
+;	INY ; If no lives, increase game mode
 ; from 1 (title card) to 2 (game over)
 
 SetGameModeAfterDeath:

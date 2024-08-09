@@ -47,28 +47,29 @@ HandleHorizontalInputTitleScreen:
 IncrementLevelSelect:
 	LDA CurrentLevel
 	CMP #HighestLevel ; Check what is the furthest level we've been, and block you from going further.
-	BCS PlayWrongsongTitleScreenLevelSelect
+	BCS WrapAroundLevelSelect
 	INC CurrentLevel
-	JMP PlaySoundEffectLevelSelect ; optimize later
+	LDA #DPCM_DrumSample_B
+	BNE SetSoundEffectLevelSelect
 
 DecreaseLevelSelect:
 	LDA CurrentLevel
-	BEQ PlayWrongsongTitleScreenLevelSelect
+	BEQ WrapAroundLevelSelect
 	DEC CurrentLevel
+	LDA #DPCM_DrumSample_A
+	BNE SetSoundEffectLevelSelect
 
-PlaySoundEffectLevelSelect:
-	LDA #SoundEffect2_CoinGet
-	STA SoundEffectQueue2
+WrapAroundLevelSelect:
+	EOR #HighestLevel
+	STA CurrentLevel
+	LDA #DPCM_BossDeath
+
+SetSoundEffectLevelSelect:
+	STA DPCMQueue
 
 WorkAroundTitleScreen:
 	JSR AdjustWorldLevelSelect
 	JMP WaitForNmiTitleScreen
-
-PlayWrongsongTitleScreenLevelSelect: ; Does a sound effect if we have reached the furthest we can go in the level select
-    LDA #DPCM_PlayerHurt
-    STA DPCMQueue
-    JMP WaitForNmiTitleScreen
-
 
 ; Handle input for start and select on the main menu
 CheckStartSelectInputTitleScreen:

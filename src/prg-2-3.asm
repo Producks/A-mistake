@@ -3345,10 +3345,10 @@ EnemyBehavior_Mushroom1up:
 
 Award1upMushroom:
 	INC Mushroom1upPulled
-	INC ExtraLives
-	BNE loc_BANK2_9050 ; Check if lives overflow. If so, reduce by one again
+;	INC ExtraLives ; Free
+;	BNE loc_BANK2_9050 ; Check if lives overflow. If so, reduce by one again
 
-	DEC ExtraLives
+;	DEC ExtraLives
 
 loc_BANK2_9050:
 	LDA #SoundEffect1_1UP
