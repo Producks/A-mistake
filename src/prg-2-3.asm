@@ -1457,7 +1457,7 @@ loc_BANK2_86E0:
 	LDY byte_RAM_5
 	LDA (byte_RAM_7), Y
 	CMP #BackgroundTile_BombableBrick
-	BEQ ExplodeNearbyBlocks_DestroyBlock
+	BNE ExplodeNearbyBlocks_DestroyBlock
 
 	CMP #BackgroundTile_DiggableSand
 	BEQ ExplodeNearbyBlocks_DestroyBlock
